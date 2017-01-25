@@ -1,8 +1,8 @@
 <?php
 /*
 * Plugin Name: ShortCodePlugin
-* Description: Handy litle ShortCodes that I use on my sites
-* Version: 1.1
+* Description: Hasznos, kismétetű shortcode plugin
+* Version: 1.2
 * Author: Webmaster442
 * Author URI: https://webmaster442.hu
 */
@@ -13,31 +13,28 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 Short Code functions
 -----------------------------------------------------------------------------*/
 
-function SubPages() {
+function SubPages($atts) {
 	ob_start();
-	echo "<h3><ul>";
+	$a = shortcode_atts( array('wrap' => ''), $atts );
+	echo "<". $a['wrap']. ">\n";
+	echo "<ul>\n";
 	wp_list_pages(array(
 					'title_li'    => '',
 					'sort_column' => 'menu_order',
 					'child_of' => get_the_ID()
 				));
-	echo "</ul></h3>";
+	echo "</ul>\n";
+	echo "</". $a['wrap']. ">";
 	return ob_get_clean();
 }
 
 function GoogleDriveList($atts) {
-	$a = shortcode_atts( array(
-        'id' => '',
-		'height' => '600px'
-    ), $atts );
+	$a = shortcode_atts( array('id' => '', 'height' => '600px'), $atts );
 	return "<iframe src=\"https://drive.google.com/embeddedfolderview?id=".$a['id']."#list\" style=\"width:100%; height:".$a['height']."; border:0;\"></iframe>";
 }
 
 function GoogleDriveGrid($atts) {
-	$a = shortcode_atts( array(
-        'id' => '',
-		'height' => '600px'
-    ), $atts );
+	$a = shortcode_atts( array('id' => '', 'height' => '600px'), $atts );
 	return "<iframe src=\"https://drive.google.com/embeddedfolderview?id=".$a['id']."#grid\" style=\"width:100%; height:".$a['height']."; border:0;\"></iframe>";
 }
 
@@ -48,10 +45,8 @@ function Email( $atts , $content = null ) {
 	return '<a href="mailto:' . antispambot( $content ) . '">' . antispambot( $content ) . '</a>';
 }
 
-function Archive() {
+function ArchiveByYear() {
 	ob_start();
-	echo("<h1>Archívum</h1>");
-	
 	$oldestyear = 1;
 	$newestyear = 1;
 	$args = array ('orderby' => 'date', 'order' => 'ASC', 'posts_per_page' => '1', 'post_status' => 'publish');
@@ -90,6 +85,34 @@ function Archive() {
 		}
 	}
 	return ob_get_clean();
+}
+
+function ArchiveByCategory() {
+	ob_start();
+	$categories = get_categories(array('orderby' => 'name', 'order' => 'ASC'));
+	
+	foreach ($categories as $category) {
+		$cat_id = $category->term_id;
+		echo '<h2>' .$category->name. '</h2>';
+		$posts = get_posts(array('cat' => $cat_id, 'posts_per_page' => '999', 'orderby' => 'date', 'order' => 'asc'));
+		echo '<ol>';
+		foreach ($posts as $post) {
+			echo '<li>';
+			echo '<a href="' .get_permalink($post->ID). '">'. $post->post_title .'</a>';
+			echo '</li>';
+		}
+		echo '</ol>';
+	}
+	return ob_get_clean();
+}
+
+function Archive($atts) {
+	$a = shortcode_atts( array('type' => 'year'), $atts );
+	if ($a['type'] == 'year')
+		return ArchiveByYear();
+	else if ($a['type'] == 'category') 
+		return ArchiveByCategory();
+	else return 'Ismeretlen típus';
 }
 
 function MarkDown($atts , $content = null) {

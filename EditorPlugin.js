@@ -14,7 +14,15 @@
                     {
                         text: 'Aloldalak liszázása',
                         onclick: function () {
-                            ed.insertContent('[subpages]');
+                            ed.windowManager.open({
+                                title: 'Aloldalak listázása',
+                                body: [{ type: 'textbox', name: 'wrap', label: 'HTML beágyazási elem:' }],
+                                onsubmit: function (e) {
+                                    ed.focus();
+                                    var t = '[subpages wrap="' + e.data.wrap + '"]';
+                                    ed.insertContent(t);
+                                }
+                            })
                         }
                     },
                     {
@@ -34,7 +42,7 @@
                         onclick: function () {
                             ed.windowManager.open({
                                 title: 'Google Drive Ikon nézet',
-                                body: [{ type: 'textbox', name: 'id:', label: 'Mappa ID' },
+                                body: [{ type: 'textbox', name: 'id', label: 'Mappa ID' },
                                        { type: 'textbox', name: 'height', label: 'Magasság', text: '600px' }, ],
                                 onsubmit: function (e) {
                                     ed.focus();
@@ -49,7 +57,7 @@
                         onclick: function () {
                             ed.windowManager.open({
                                 title: 'Google Drive Ikon nézet',
-                                body: [{ type: 'textbox', name: 'id:', label: 'Mappa ID' },
+                                body: [{ type: 'textbox', name: 'id', label: 'Mappa ID' },
                                        { type: 'textbox', name: 'height', label: 'Magasság', text: '600px' }, ],
                                 onsubmit: function (e) {
                                     ed.focus();
@@ -62,7 +70,16 @@
                     {
                         text: 'Archívum',
                         onclick: function () {
-                            ed.insertContent('[archive]');
+                            ed.windowManager.open({
+                                title: 'Archívum létrehozása',
+                                body: [{ type: 'listbox', name: 'type', label: 'Select :', onselect: function (e) { }, 'values': [{ text: 'Éves', value: 'year' }, { text: 'Kategória', value: 'category' }] }],
+                                onsubmit: function (e) {
+                                    ed.focus();
+                                    var t = '[archive type="' + e.data.type+ '"]';
+                                    ed.insertContent(t);
+                                }
+                            })
+                            //ed.insertContent('[archive]');
                         }
                     },
                     {
@@ -89,7 +106,10 @@
                                        { type: 'textbox', multiline: true, name: 'source', label: 'Forrráskód', style: 'height: 280px' }],
                                 onsubmit: function (e) {
                                     ed.focus();
-                                    ed.selection.setContent('<pre class="language-' + e.data.language + '"><code>' + e.data.source + '</code></pre>');
+									var css = 'language-'+e.data.language;
+									if (e.data.linenumbers)
+										css += " line-numbers";
+									ed.selection.setContent('<pre class="' + css + '"><code>' + e.data.source + '</code></pre>');
                                 }
                             })
                         }

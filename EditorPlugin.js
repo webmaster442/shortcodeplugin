@@ -1,3 +1,7 @@
+/*
+ShortCode Plugin Wordpress Editor plugin
+Írta: Ruzsinszki Gábor
+*/
 (function () {
     /* Register the buttons */
     tinymce.create('tinymce.plugins.MyButtons', {
@@ -95,25 +99,58 @@
                         }
                     },
                     {
+                        text: 'Be/Kijelentkezési link',
+                        onclick: function () {
+							ed.insertContent('[loginlogout]');
+                        }
+                    },
+					{
                         text: 'Forráskód',
                         onclick: function () {
-                            ed.windowManager.open({
-                                title: 'Forráskód beillesztése',
-								width: 500,
-								height: 400,
-								body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
-                                       { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: true },
-                                       { type: 'textbox', multiline: true, name: 'source', label: 'Forrráskód', style: 'height: 280px' }],
-                                onsubmit: function (e) {
-                                    ed.focus();
-									var css = 'language-'+e.data.language;
-									if (e.data.linenumbers)
-										css += " line-numbers";
-									ed.selection.setContent('<pre class="' + css + '"><code>' + e.data.source + '</code></pre>');
-                                }
-                            })
+							var selected_text = ed.selection.getContent();
+							if (selected_text.length > 0) {
+							    ed.windowManager.open({
+							        title: 'Forráskód beillesztése',
+							        body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
+                                           { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: false },
+                                           { type: 'checkbox', name: 'needescape', text: 'Speciális karakterek konvertálása', checked: false }],
+							        onsubmit: function (e) {
+							            ed.focus()
+							            var sourcecode = selected_text;
+							            if (e.data.needescape) {
+							                sourcecode = sourcecode.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+							            }
+							            var css = 'language-' + e.data.language;
+							            if (e.data.linenumbers)
+							                css += " line-numbers";
+							            ed.selection.setContent('<pre class="' + css + '"><code>' + sourcecode + '</code></pre>');
+							        }
+							    })
+							}
+							else {
+							    ed.windowManager.open({
+							        title: 'Forráskód beillesztése',
+							        width: 500,
+							        height: 400,
+							        body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
+                                           { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: true },
+                                           { type: 'checkbox', name: 'needescape', text: 'Speciális karakterek konvertálása', checked: true },
+                                           { type: 'textbox', multiline: true, name: 'source', label: 'Forrráskód', style: 'height: 250px' }],
+							        onsubmit: function (e) {
+							            ed.focus()
+							            var sourcecode = e.data.source;
+							            if (e.data.needescape) {
+							                sourcecode = sourcecode.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+							            }
+							            var css = 'language-' + e.data.language;
+							            if (e.data.linenumbers)
+							                css += " line-numbers";
+							            ed.selection.setContent('<pre class="' + css + '"><code>' + sourcecode + '</code></pre>');
+							        }
+							    })
+							}
                         }
-                    }
+					}
                 ]
             });
         },

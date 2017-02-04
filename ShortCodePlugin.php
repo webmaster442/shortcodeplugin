@@ -87,21 +87,35 @@ function ArchiveByYear() {
 	return ob_get_clean();
 }
 
+function renderSubCat($id) {
+	$posts = get_posts(array('category__in' => $id, 'posts_per_page' => '999', 'orderby' => 'date', 'order' => 'asc'));
+	echo '<ol>';
+	foreach ($posts as $post) {
+		echo '<li>';
+		echo '<a href="' .get_permalink($post->ID). '">'. $post->post_title .'</a>';
+		echo '</li>';
+	}
+	echo '</ol>';
+}
+
+
 function ArchiveByCategory() {
 	ob_start();
-	$categories = get_categories(array('orderby' => 'name', 'order' => 'ASC'));
-	
+	$categories = get_categories(array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0));
 	foreach ($categories as $category) {
 		$cat_id = $category->term_id;
 		echo '<h2>' .$category->name. '</h2>';
-		$posts = get_posts(array('cat' => $cat_id, 'posts_per_page' => '999', 'orderby' => 'date', 'order' => 'asc'));
-		echo '<ol>';
-		foreach ($posts as $post) {
-			echo '<li>';
-			echo '<a href="' .get_permalink($post->ID). '">'. $post->post_title .'</a>';
-			echo '</li>';
+		$sub = get_categories(array('orderby' => 'name', 'order' => 'ASC', 'child_of' => $cat_id));
+		$haschilds = count($sub) > 0;
+		renderSubCat($cat_id);
+		if ($haschilds) {
+			echo '<div style="padding-left: 30px;">';
+			foreach ($sub as $subcat) {
+				echo '<h3>' .$subcat->name. '</h3>';
+				renderSubCat($subcat->term_id);
+			}
+			echo '</div>';
 		}
-		echo '</ol>';
 	}
 	return ob_get_clean();
 }
@@ -119,6 +133,23 @@ function MarkDown($atts , $content = null) {
 	require_once('Parsedown.php');
 	$Parsedown = new Parsedown();
 	return $Parsedown->text($content);
+}
+
+function LoginLogoutLink() {
+	ob_start();
+	$login = is_user_logged_in();
+	if ($login == true) {
+		$user = wp_get_current_user();
+		echo '<i class="fa fa-user" aria-hidden="true"></i> ';
+		echo '<a href="'. get_edit_user_link().'">'.$user->display_name.'</a> | ';
+		echo '<i class="fa fa-sign-out" aria-hidden="true"></i> ';
+		echo '<a href="'. wp_logout_url(home_url()) . '" title="Kijelentkezés">Kijelentkezés</a>';
+	}
+	else {
+		echo '<i class="fa fa-sign-in" aria-hidden="true"></i> ';
+		echo '<a href="'.wp_login_url( get_permalink() ). '" title="Bejelentkezés">Bejelentkezés</a>';
+	}
+	return ob_get_clean();
 }
 
 /*-----------------------------------------------------------------------------
@@ -159,6 +190,7 @@ add_shortcode('subpages', 'SubPages');
 add_shortcode('email', 'Email');
 add_shortcode('archive', 'Archive');
 add_shortcode('markdown', 'MarkDown');
+add_shortcode('loginlogout', 'LoginLogoutLink');
 add_shortcode('drivefolder-list', 'GoogleDriveList');
 add_shortcode('drivefolder-grid', 'GoogleDriveList');
 

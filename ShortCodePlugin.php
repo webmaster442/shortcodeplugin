@@ -7,11 +7,11 @@
  * Author URI: https://webmaster442.hu
  * License: GPL2
  */
-
 class ShortCodePlugin
 {
-	public $Notes = array();
-	public $Counter = 0;
+	public $footnotes = array();
+	public $footnoteCount = 0;
+	public $prevPost;
 	
     public function __construct() {
         //kódok regisztrálása
@@ -37,7 +37,9 @@ class ShortCodePlugin
     }
 	
 	public function RegisterJSCSS() {
-		wp_register_style( 'TooltipCSS', plugins_url( '/assets/tooltip.css' , __FILE__ ), null, false, false );
+		wp_register_script( 'qtip', plugins_url( '/assets/jquery.qtip.min.js' , __FILE__ ), false, false, true );
+		wp_register_script( 'qtipcall', plugins_url( '/assets/jquery.qtipcall.js' , __FILE__ ), array('jquery', 'qtip'), false, true );
+		wp_register_style( 'qtipstyles', plugins_url( '/assets/jquery.qtip.min.css' , __FILE__ ), null, false, false );
 	}
 	
 	public function RegisterAdminMenu() {
@@ -104,7 +106,8 @@ class ShortCodePlugin
     public function Archive($atts) {
         $a = shortcode_atts( array('type' => 'year'), $atts );
         require_once('ShortCodeArchive.php');
-        return ArchiveGenerator::Generate($a['type']);
+		$archive = new ArchiveGenerator();
+        return $archive->Generate($a['type']);
     }
 
     public function MarkDown($atts , $content = null) {
@@ -131,33 +134,55 @@ class ShortCodePlugin
     }
 	
 	public function Note($atts , $content = null) {
-		//http://www.webdesignerdepot.com/2012/11/how-to-create-a-simple-css3-tooltip/
-		ob_start();
-		wp_enqueue_style('TooltipCSS');
-		$count = $this->Counter;
-		$this->Notes[$count] = $content;
-		$count++;
-		$this->Counter = $count;
+		wp_enqueue_style( 'qtipstyles' );
+		wp_enqueue_script( 'qtip' );
+		wp_enqueue_script( 'qtipcall' );
+		$this->easy_footnote_count($this->footnoteCount, get_the_ID());
+		$this->easy_footnote_content($content);
 		
-		echo '<a href="#" title="'.$content.'" class="tooltip">';
-		echo '<sup>".$count."</sup></a>';
-		return ob_get_clean();
+		if (is_singular() && is_main_query()) {
+			$footnoteLink = '#easy-footnote-bottom-'.$this->footnoteCount;
+		}
+		else {
+			$footnoteLink = get_permalink(get_the_ID()).'#easy-footnote-bottom-'.$this->footnoteCount;
+		}
+		$footnoteContent = "<span id='easy-footnote-".$this->footnoteCount."' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='".$footnoteLink."' title='".htmlspecialchars($content, ENT_QUOTES)."'><sup>$this->footnoteCount</sup></a></span>";
+		return $footnoteContent;
 	}
 	
+	public function easy_footnote_content($content) {
+		$this->footnotes[$this->footnoteCount] = $content;
+		return $this->footnotes;
+	}
+
+	public function easy_footnote_count($count, $currentPost) {
+		if ($this->prevPost != $currentPost) {
+			$count = 0;
+		}
+
+		$this->prevPost = $currentPost;
+		$count++;
+		$this->footnoteCount = $count;
+
+		return $this->footnoteCount;
+	}
+
 	public function NoteAfterContent($content) {
 		if (is_singular() && is_main_query()) {
-			global $notes;
-			$notes .= '<div><h4>Lábjegyzetek</h4>';
-			$notes .= '<ol>';
-			foreach ($this->Note as $note) {
-				$notes.='<li>'.$note.'</li>';
+			$footnotesInsert = $this->footnotes;
+			global $footnoteCopy;
+			
+			//$content .= '<style>.admin-bar .easy-footnote-margin-adjust { position: absolute; margin-top: -40px; }</style>';
+
+			foreach ($footnotesInsert as $count => $footnote) {
+				$footnoteCopy .= '<li class="easy-footnote-single"><span id="easy-footnote-bottom-'.$count.'" class="easy-footnote-margin-adjust"></span>'.$footnote.' <a href="#easy-footnote-'.$count.'"><i class="fa fa-level-up" aria-hidden="true"></i></a></li>';
 			}
-			$notes .= '</ol>';
-			$content .= $notes;
+			if (!empty($footnotesInsert)) {
+					$content .= '<div class="easy-footnote-title"><h4>Lábjegyzetek</h4></div><ol class="easy-footnotes-wrapper">'.$footnoteCopy.'</ol>';
+			}
 		}
 		return $content;
 	}
 }
-
 $shortcodes = new ShortCodePlugin();
 ?>

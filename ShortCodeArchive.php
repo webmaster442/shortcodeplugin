@@ -1,7 +1,7 @@
 <?php
 class ArchiveGenerator
 {
-    public static function ArchiveByYear() {
+    private function ArchiveByYear() {
         ob_start();
         $oldestyear = 1;
         $newestyear = 1;
@@ -43,7 +43,7 @@ class ArchiveGenerator
         return ob_get_clean();
     }
 
-    public static function renderSubCat($id) {
+    private function renderSubCat($id) {
         $posts = get_posts(array('category__in' => $id, 'posts_per_page' => '999', 'orderby' => 'date', 'order' => 'asc'));
         echo '<ol>';
         foreach ($posts as $post) {
@@ -54,7 +54,7 @@ class ArchiveGenerator
         echo '</ol>';
     }
 
-    public static function ArchiveByCategory() {
+    private function ArchiveByCategory() {
         ob_start();
         $categories = get_categories(array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0));
         foreach ($categories as $category) {
@@ -62,12 +62,12 @@ class ArchiveGenerator
             echo '<h2>' .$category->name. '</h2>';
             $sub = get_categories(array('orderby' => 'name', 'order' => 'ASC', 'child_of' => $cat_id));
             $haschilds = count($sub) > 0;
-            renderSubCat($cat_id);
+            $this->renderSubCat($cat_id);
             if ($haschilds) {
                 echo '<div style="padding-left: 30px;">';
                 foreach ($sub as $subcat) {
                     echo '<h3>' .$subcat->name. '</h3>';
-                    renderSubCat($subcat->term_id);
+                    $this->renderSubCat($subcat->term_id);
                 }
                 echo '</div>';
             }
@@ -75,9 +75,9 @@ class ArchiveGenerator
         return ob_get_clean();
     }
 	
-	public static function Generate($type) {
-		if ($type === 'year') return ArchiveByYear();
-		else if ($type === 'category') return ArchiveByCategory();
+	public function Generate($type) {
+		if ($type === 'year') return $this->ArchiveByYear();
+		else if ($type === 'category') return $this->ArchiveByCategory();
 		else return "";
 	}
 }

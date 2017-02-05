@@ -79,7 +79,7 @@ ShortCode Plugin Wordpress Editor plugin
                                 body: [{ type: 'listbox', name: 'type', label: 'Select :', onselect: function (e) { }, 'values': [{ text: 'Éves', value: 'year' }, { text: 'Kategória', value: 'category' }] }],
                                 onsubmit: function (e) {
                                     ed.focus();
-                                    var t = '[archive type="' + e.data.type+ '"]';
+                                    var t = '[archive type="' + e.data.type + '"]';
                                     ed.insertContent(t);
                                 }
                             })
@@ -101,56 +101,77 @@ ShortCode Plugin Wordpress Editor plugin
                     {
                         text: 'Be/Kijelentkezési link',
                         onclick: function () {
-							ed.insertContent('[loginlogout]');
+                            ed.insertContent('[loginlogout]');
                         }
                     },
 					{
-                        text: 'Forráskód',
-                        onclick: function () {
-							var selected_text = ed.selection.getContent();
-							if (selected_text.length > 0) {
-							    ed.windowManager.open({
-							        title: 'Forráskód beillesztése',
-							        body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
+					    text: 'Forráskód',
+					    onclick: function () {
+					        var selected_text = ed.selection.getContent();
+					        if (selected_text.length > 0) {
+					            ed.windowManager.open({
+					                title: 'Forráskód beillesztése',
+					                body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
                                            { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: false },
                                            { type: 'checkbox', name: 'needescape', text: 'Speciális karakterek konvertálása', checked: false }],
-							        onsubmit: function (e) {
-							            ed.focus()
-							            var sourcecode = selected_text;
-							            if (e.data.needescape) {
-							                sourcecode = sourcecode.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-							            }
-							            var css = 'language-' + e.data.language;
-							            if (e.data.linenumbers)
-							                css += " line-numbers";
-							            ed.selection.setContent('<pre class="' + css + '"><code>' + sourcecode + '</code></pre>');
-							        }
-							    })
-							}
-							else {
-							    ed.windowManager.open({
-							        title: 'Forráskód beillesztése',
-							        width: 500,
-							        height: 400,
-							        body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
+					                onsubmit: function (e) {
+					                    ed.focus()
+					                    var sourcecode = selected_text;
+					                    if (e.data.needescape) {
+					                        sourcecode = sourcecode.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+					                    }
+					                    var css = 'language-' + e.data.language;
+					                    if (e.data.linenumbers)
+					                        css += " line-numbers";
+					                    ed.selection.setContent('<pre class="' + css + '"><code>' + sourcecode + '</code></pre>');
+					                }
+					            })
+					        }
+					        else {
+					            ed.windowManager.open({
+					                title: 'Forráskód beillesztése',
+					                width: 500,
+					                height: 400,
+					                body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
                                            { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: true },
                                            { type: 'checkbox', name: 'needescape', text: 'Speciális karakterek konvertálása', checked: true },
                                            { type: 'textbox', multiline: true, name: 'source', label: 'Forrráskód', style: 'height: 250px' }],
-							        onsubmit: function (e) {
-							            ed.focus()
-							            var sourcecode = e.data.source;
-							            if (e.data.needescape) {
-							                sourcecode = sourcecode.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-							            }
-							            var css = 'language-' + e.data.language;
-							            if (e.data.linenumbers)
-							                css += " line-numbers";
-							            ed.selection.setContent('<pre class="' + css + '"><code>' + sourcecode + '</code></pre>');
-							        }
-							    })
-							}
-                        }
-					}
+					                onsubmit: function (e) {
+					                    ed.focus()
+					                    var sourcecode = e.data.source;
+					                    if (e.data.needescape) {
+					                        sourcecode = sourcecode.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+					                    }
+					                    var css = 'language-' + e.data.language;
+					                    if (e.data.linenumbers)
+					                        css += " line-numbers";
+					                    ed.selection.setContent('<pre class="' + css + '"><code>' + sourcecode + '</code></pre>');
+					                }
+					            })
+					        }
+					    }
+					},
+					{
+					    text: 'Lábjegyzet',
+					    onclick: function () {
+					        var selected_text = ed.selection.getContent();
+					        if (selected_text.length > 0) {
+					            var wrapped = '[note]' + selected_text + '[/note]';
+					            ed.insertContent(wrapped);
+					        }
+					        else {
+					            ed.windowManager.open({
+					                title: 'Lábjegyzet beillesztése',
+					                body: [{ type: 'textbox', name: 'footnote', label: 'Lábjegyzet' }],
+					                onsubmit: function (e) {
+					                    ed.focus()
+					                    var wrapped = '[note]' + e.data.footnote + '[/note]';
+					                    ed.selection.setContent(wrapped);
+					                }
+					            })
+					        }
+					    }
+					},
                 ]
             });
         },

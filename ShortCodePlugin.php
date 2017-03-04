@@ -75,14 +75,13 @@ class ShortCodePlugin
     public function SubPages($atts) {
         ob_start();
         $a = shortcode_atts( array('wrap' => ''), $atts );
-        echo "<". $a['wrap']. ">\n";
+		echo "<". $a['wrap']. ">\n";
         echo "<ul>\n";
         wp_list_pages(array(
                           'title_li'    => '',
                           'sort_column' => 'menu_order',
                           'child_of' => get_the_ID()));
         echo "</ul>\n";
-        echo "</". $a['wrap']. ">";
         return ob_get_clean();
     }
 
@@ -150,12 +149,12 @@ class ShortCodePlugin
 		return $footnoteContent;
 	}
 	
-	public function easy_footnote_content($content) {
+	private function easy_footnote_content($content) {
 		$this->footnotes[$this->footnoteCount] = $content;
 		return $this->footnotes;
 	}
 
-	public function easy_footnote_count($count, $currentPost) {
+	private function easy_footnote_count($count, $currentPost) {
 		if ($this->prevPost != $currentPost) {
 			$count = 0;
 		}
@@ -165,6 +164,13 @@ class ShortCodePlugin
 		$this->footnoteCount = $count;
 
 		return $this->footnoteCount;
+	}
+
+	private function CoppyRightText() {
+		$user = wp_get_current_user();
+		return '<div class="copyright" style="display:none;">' . 
+		       '© ' . date("Y").  'C# Tutorial.hu<br/>' .
+			   'Felhasználó: ' . $user->user_email . ' ' .$user->display_name .'</div>';
 	}
 
 	public function NoteAfterContent($content) {
@@ -180,6 +186,7 @@ class ShortCodePlugin
 			if (!empty($footnotesInsert)) {
 					$content .= '<div class="easy-footnote-title"><h4>Lábjegyzetek</h4></div><ol class="easy-footnotes-wrapper">'.$footnoteCopy.'</ol>';
 			}
+			$content .= $this->CoppyRightText();
 		}
 		return $content;
 	}

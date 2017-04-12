@@ -76,10 +76,11 @@ ShortCode Plugin Wordpress Editor plugin
                         onclick: function () {
                             ed.windowManager.open({
                                 title: 'Archívum létrehozása',
-                                body: [{ type: 'listbox', name: 'type', label: 'Select :', onselect: function (e) { }, 'values': [{ text: 'Éves', value: 'year' }, { text: 'Kategória', value: 'category' }] }],
+                                body: [{ type: 'listbox', name: 'type', label: 'Select :', onselect: function (e) { }, 'values': [{ text: 'Éves', value: 'year' }, { text: 'Kategória', value: 'category' }] },
+									   { type: 'textbox', name: 'exclude', label: 'Kihagyott kategóriák: ', text: '' }],
                                 onsubmit: function (e) {
                                     ed.focus();
-                                    var t = '[archive type="' + e.data.type + '"]';
+                                    var t = '[archive type="' + e.data.type + '" exclude="'+ e.data.exclude +'"]';
                                     ed.insertContent(t);
                                 }
                             })
@@ -102,6 +103,18 @@ ShortCode Plugin Wordpress Editor plugin
                         text: 'Be/Kijelentkezési link',
                         onclick: function () {
                             ed.insertContent('[loginlogout]');
+                        }
+                    },
+					                    {
+                        text: 'Regisztrációs link',
+                        onclick: function () {
+                            ed.insertContent('[registerlink]');
+                        }
+                    },
+					                    {
+                        text: 'RSS Linkek',
+                        onclick: function () {
+                            ed.insertContent('[rsslinks]');
                         }
                     },
 					{

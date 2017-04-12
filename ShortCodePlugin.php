@@ -20,6 +20,8 @@ class ShortCodePlugin
         add_shortcode('archive', array($this, 'Archive'));
         add_shortcode('markdown', array($this, 'MarkDown'));
         add_shortcode('loginlogout', array($this, 'LoginLogoutLink'));
+		add_shortcode('registerlink', array($this, 'RegisterLink'));
+		add_shortcode('rsslinks', array($this, 'RSSLinks'));
         add_shortcode('note', array($this, 'Note'));
         add_shortcode('drivefolder-list', array($this, 'GoogleDriveList'));
         add_shortcode('drivefolder-grid', array($this, 'GoogleDriveList'));
@@ -103,10 +105,10 @@ class ShortCodePlugin
     }
 
     public function Archive($atts) {
-        $a = shortcode_atts( array('type' => 'year'), $atts );
+        $a = shortcode_atts( array('type' => 'year', 'exclude' => null), $atts );
         require_once('ShortCodeArchive.php');
 		$archive = new ArchiveGenerator();
-        return $archive->Generate($a['type']);
+        return $archive->Generate($a['type'], $a['exclude']);
     }
 
     public function MarkDown($atts , $content = null) {
@@ -131,6 +133,22 @@ class ShortCodePlugin
         }
         return ob_get_clean();
     }
+	
+	public function RegisterLink() {
+		ob_start();
+		$login = is_user_logged_in();
+		if ($login == false) {
+			echo '<i class="fa fa-user-plus" aria-hidden="true"></i> <a href="'.wp_registration_url().'">Regisztáció</a>';
+		}
+		return ob_get_clean();
+	}
+	
+	public function RSSLinks() {
+		ob_start();
+		echo '<i class="fa fa-rss" aria-hidden="true"></i> <a href="'.bloginfo('rss2_url').'">RSS hírfolyam</a><br/>';
+		echo '<i class="fa fa-rss" aria-hidden="true"></i> <a href="'.bloginfo('comments_rss2_url').'">Hozzászólások hírfolyam</a>';
+		return ob_get_clean();
+	}
 	
 	public function Note($atts , $content = null) {
 		wp_enqueue_style( 'qtipstyles' );

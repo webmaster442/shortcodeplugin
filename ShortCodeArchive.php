@@ -54,13 +54,16 @@ class ArchiveGenerator
         echo '</ol>';
     }
 
-    private function ArchiveByCategory() {
+    private function ArchiveByCategory($exclude) {
         ob_start();
-        $categories = get_categories(array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0));
+		if (isset($exclude))
+			$categories = get_terms('category', array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0, 'exclude_tree' => $exclude));
+		else	
+			$categories = get_terms('category', array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0));
         foreach ($categories as $category) {
             $cat_id = $category->term_id;
             echo '<h2>' .$category->name. '</h2>';
-            $sub = get_categories(array('orderby' => 'name', 'order' => 'ASC', 'child_of' => $cat_id));
+            $sub = get_terms('category', array('orderby' => 'name', 'order' => 'ASC', 'child_of' => $cat_id));
             $haschilds = count($sub) > 0;
             $this->renderSubCat($cat_id);
             if ($haschilds) {
@@ -75,9 +78,9 @@ class ArchiveGenerator
         return ob_get_clean();
     }
 	
-	public function Generate($type) {
+	public function Generate($type, $param=null) {
 		if ($type === 'year') return $this->ArchiveByYear();
-		else if ($type === 'category') return $this->ArchiveByCategory();
+		else if ($type === 'category') return $this->ArchiveByCategory($param);
 		else return "";
 	}
 }

@@ -19,4 +19,5 @@ jQuery(document).ready(function($){
 			effect: function() { $(this).slideUp(); }
         }
 	});
+	$(".tablesorter").tablesorter(); 
 });

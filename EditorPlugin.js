@@ -42,6 +42,18 @@ ShortCode Plugin Wordpress Editor plugin
                         }
                     },
                     {
+                        text: 'Bejelentkezett tartalom',
+                        onclick: function () {
+                            var selected_text = ed.selection.getContent();
+                            if (selected_text.length < 1) {
+                                alert("Először jelölj ki egy szöveget, ami csak a bejelentkezett felhasználóknak lesz látható");
+                                return;
+                            }
+                            var wrapped = '[logedin]' + selected_text + '[/logedin]';
+                            ed.insertContent(wrapped);
+                        }
+                    },
+                    {
                         text: 'Google Drive Mappa - Lista',
                         onclick: function () {
                             ed.windowManager.open({
@@ -105,16 +117,10 @@ ShortCode Plugin Wordpress Editor plugin
                             ed.insertContent('[loginlogout]');
                         }
                     },
-					                    {
+					{
                         text: 'Regisztrációs link',
                         onclick: function () {
                             ed.insertContent('[registerlink]');
-                        }
-                    },
-					                    {
-                        text: 'RSS Linkek',
-                        onclick: function () {
-                            ed.insertContent('[rsslinks]');
                         }
                     },
 					{

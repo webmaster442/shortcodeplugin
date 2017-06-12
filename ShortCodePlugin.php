@@ -21,10 +21,11 @@ class ShortCodePlugin
         add_shortcode('markdown', array($this, 'MarkDown'));
         add_shortcode('loginlogout', array($this, 'LoginLogoutLink'));
 		add_shortcode('registerlink', array($this, 'RegisterLink'));
-		add_shortcode('rsslinks', array($this, 'RSSLinks'));
         add_shortcode('note', array($this, 'Note'));
         add_shortcode('drivefolder-list', array($this, 'GoogleDriveList'));
         add_shortcode('drivefolder-grid', array($this, 'GoogleDriveList'));
+		add_shortcode('logedin', array($this, 'IsLogedInConent'));
+		add_shortcode('csvtable', array($this, 'CsvTable'));
         //editor menü
         add_action( 'admin_init', array($this, 'RegisterMenu'));
 		//admin menü
@@ -40,8 +41,10 @@ class ShortCodePlugin
 	
 	public function RegisterJSCSS() {
 		wp_register_script( 'qtip', plugins_url( '/assets/jquery.qtip.min.js' , __FILE__ ), false, false, true );
-		wp_register_script( 'qtipcall', plugins_url( '/assets/jquery.qtipcall.js' , __FILE__ ), array('jquery', 'qtip'), false, true );
+		wp_register_script( 'tablesorter', plugins_url( '/assets/tablesorter.js' , __FILE__ ), false, false, true );
+		wp_register_script( 'call', plugins_url( '/assets/caller.js' , __FILE__ ), array('jquery', 'qtip', 'tablesorter'), false, true );
 		wp_register_style( 'qtipstyles', plugins_url( '/assets/jquery.qtip.min.css' , __FILE__ ), null, false, false );
+		wp_register_style( 'tablesorterstyle', plugins_url( '/assets/tablesorter.css' , __FILE__ ), null, false, false );
 	}
 	
 	public function RegisterAdminMenu() {
@@ -143,17 +146,29 @@ class ShortCodePlugin
 		return ob_get_clean();
 	}
 	
-	public function RSSLinks() {
+	public function IsLogedInConent($atts , $content = null) {
 		ob_start();
-		echo '<i class="fa fa-rss" aria-hidden="true"></i> <a href="'.bloginfo('rss2_url').'">RSS hírfolyam</a><br/>';
-		echo '<i class="fa fa-rss" aria-hidden="true"></i> <a href="'.bloginfo('comments_rss2_url').'">Hozzászólások hírfolyam</a>';
+		$login = is_user_logged_in();
+		if ($login) {
+			echo $content;
+		}
 		return ob_get_clean();
+	}
+	
+	public function CsvTable($atts , $content = null) {
+		wp_enqueue_style( 'tablesorterstyle' );
+		wp_enqueue_script( 'tablesorter' );
+		wp_enqueue_script( 'call' );
+		$a = shortcode_atts( array('delimiter' => ';'), $atts );
+		require_once("CsvGenerator.php");
+		$gen = new CsvGenerator();
+		return $gen->Generate($content, $a['delimiter']);
 	}
 	
 	public function Note($atts , $content = null) {
 		wp_enqueue_style( 'qtipstyles' );
 		wp_enqueue_script( 'qtip' );
-		wp_enqueue_script( 'qtipcall' );
+		wp_enqueue_script( 'call' );
 		$this->easy_footnote_count($this->footnoteCount, get_the_ID());
 		$this->easy_footnote_content($content);
 		
@@ -187,7 +202,7 @@ class ShortCodePlugin
 	private function CoppyRightText() {
 		$user = wp_get_current_user();
 		return '<div class="copyright" style="display:none;">' . 
-		       '© ' . date("Y").  'C# Tutorial.hu<br/>' .
+		       '© ' . date("Y").' '.get_bloginfo( 'name' ).'<br/>' .
 			   'Felhasználó: ' . $user->user_email . ' ' .$user->display_name .'</div>';
 	}
 

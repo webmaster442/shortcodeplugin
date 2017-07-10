@@ -26,6 +26,7 @@ class ShortCodePlugin
         add_shortcode('drivefolder-grid', array($this, 'GoogleDriveList'));
 		add_shortcode('logedin', array($this, 'IsLogedInConent'));
 		add_shortcode('csvtable', array($this, 'CsvTable'));
+		add_shortcode('circleprogress', array($this, 'CircleProgress'));
         //editor menü
         add_action( 'admin_init', array($this, 'RegisterMenu'));
 		//admin menü
@@ -45,6 +46,7 @@ class ShortCodePlugin
 		wp_register_script( 'call', plugins_url( '/assets/caller.js' , __FILE__ ), array('jquery', 'qtip', 'tablesorter'), false, true );
 		wp_register_style( 'qtipstyles', plugins_url( '/assets/jquery.qtip.min.css' , __FILE__ ), null, false, false );
 		wp_register_style( 'tablesorterstyle', plugins_url( '/assets/tablesorter.css' , __FILE__ ), null, false, false );
+		wp_register_style( 'circlestyle', plugins_url( '/assets/circle.css' , __FILE__ ), null, false, false );
 	}
 	
 	public function RegisterAdminMenu() {
@@ -163,6 +165,22 @@ class ShortCodePlugin
 		require_once("CsvGenerator.php");
 		$gen = new CsvGenerator();
 		return $gen->Generate($content, $a['delimiter']);
+	}
+
+	public function CircleProgress($atts, $content = null) {
+		wp_enqueue_style( 'circlestyle' );
+		$a = shortcode_atts( array('progress' => '0', 'size' => 'big', 'color' => 'blue'), $atts );
+		ob_start();
+		if ($a['size'] == 'normal') $a['size'] = '';
+		if ($a['color'] == 'blue') $a['color'] = '';
+		$params = sprintf("c100 p%s %s %s", $a['progress'], $a['size'], $a['color']);
+		echo '<div class="'.$params.'">';
+		echo '<span>'.$a['progress'].'%</span>';
+		echo '<div class="slice">';
+		echo '<div class="bar"></div>';
+		echo '<div class="fill"></div>';
+		echo '</div></div>';
+		return ob_get_clean();
 	}
 	
 	public function Note($atts , $content = null) {

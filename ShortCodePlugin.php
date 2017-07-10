@@ -1,12 +1,13 @@
 <?php
-/**
- * Plugin Name: ShortCode Plugin
- * Description: Hasznos shortcode-ok
- * Version: 2.0
- * Author: Ruzsinszki Gábor
- * Author URI: https://webmaster442.hu
- * License: GPL2
- */
+/*
+Plugin Name: ShortCode Plugin
+Description: Hasznos shortcode-ok
+Version: 2.5
+Author: Ruzsinszki Gábor
+Author URI: https://webmaster442.hu
+License: GPL2
+*/
+
 class ShortCodePlugin
 {
     public $footnotes = array();

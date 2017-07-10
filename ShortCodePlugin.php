@@ -49,6 +49,7 @@ class ShortCodePlugin
         wp_register_style( 'qtipstyles', plugins_url( '/assets/jquery.qtip.min.css' , __FILE__ ), null, false, false );
         wp_register_style( 'tablesorterstyle', plugins_url( '/assets/tablesorter.css' , __FILE__ ), null, false, false );
         wp_register_style( 'circlestyle', plugins_url( '/assets/circle.css' , __FILE__ ), null, false, false );
+        wp_register_style( 'colapse', plugins_url( '/assets/colapse.css' , __FILE__ ), null, false, false );
     }
     
     public function RegisterAdminMenu() {
@@ -112,6 +113,7 @@ class ShortCodePlugin
     }
 
     public function Archive($atts) {
+        wp_enqueue_style( 'colapse' );
         $a = shortcode_atts( array('type' => 'year', 'exclude' => null), $atts );
         require_once('ShortCodeArchive.php');
         $archive = new ArchiveGenerator();

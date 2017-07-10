@@ -60,7 +60,10 @@ class ShortCodePlugin
         if ( !current_user_can( 'manage_options' ) )  {
             wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
         }
-        include('leiras.html');
+        require_once('Parsedown.php');
+        $Parsedown = new Parsedown();
+        $content = $this->GetContent('README.md');
+        echo $Parsedown->text($content);;
     }
 
     public function RegisterMenu() {
@@ -233,6 +236,12 @@ class ShortCodePlugin
         return '<div class="copyright" style="display:none;">' . 
                '© ' . date("Y").' '.get_bloginfo( 'name' ).'<br/>' .
                'Felhasználó: ' . $user->user_email . ' ' .$user->display_name .'</div>';
+    }
+
+    private function GetContent($filename) {
+        ob_start();
+        include $filename;
+        return ob_get_clean();
     }
 
     public function NoteAfterContent($content) {

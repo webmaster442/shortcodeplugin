@@ -142,6 +142,32 @@ ShortCode Plugin Wordpress Editor plugin
                         }
                     },
                     {
+                        text: 'Tartalom Bejelentkezett felhasználóknak',
+                        onclick: function () {
+                            var selected_text = ed.selection.getContent();
+                            if (selected_text.length < 1) {
+                                alert("Jelölj ki egy szövegrészletet, amit csak bejelentkezett felhasználók számára szeretnél láthatóvá tenni.");
+                            }
+                            else {
+                                var wrapped = '[logedin]' + selected_text + '[/logedin]';
+                                ed.insertContent(wrapped);
+                            }
+                        }
+                    },
+                    {
+                        text: 'Tartalom NEM Bejelentkezett felhasználóknak',
+                        onclick: function () {
+                            var selected_text = ed.selection.getContent();
+                            if (selected_text.length < 1) {
+                                alert("Jelölj ki egy szövegrészletet, amit csak nem bejelentkezett felhasználók számára szeretnél láthatóvá tenni.");
+                            }
+                            else {
+                                var wrapped = '[notlogedin]' + selected_text + '[/notlogedin]';
+                                ed.insertContent(wrapped);
+                            }
+                        }
+                    },
+                    {
                         text: 'Be/Kijelentkezési link',
                         onclick: function () {
                             ed.insertContent('[loginlogout]');

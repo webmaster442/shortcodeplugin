@@ -16,19 +16,20 @@ class ShortCodePlugin
     
     public function __construct() {
         //kódok regisztrálása
-        add_shortcode('subpages', array($this, 'SubPages'));
-        add_shortcode('email', array($this, 'Email'));
-        add_shortcode('archive', array($this, 'Archive'));
-        add_shortcode('markdown', array($this, 'MarkDown'));
-        add_shortcode('loginlogout', array($this, 'LoginLogoutLink'));
-        add_shortcode('registerlink', array($this, 'RegisterLink'));
-        add_shortcode('note', array($this, 'Note'));
-        add_shortcode('drivefolder-list', array($this, 'GoogleDriveList'));
-        add_shortcode('drivefolder-grid', array($this, 'GoogleDriveList'));
-        add_shortcode('logedin', array($this, 'IsLogedInConent'));
-        add_shortcode('csvtable', array($this, 'CsvTable'));
-        add_shortcode('circleprogress', array($this, 'CircleProgress'));
-        add_shortcode('tagcloud', array($this, 'TagCloud'));
+        add_shortcode('subpages', array($this, 'SubPages')); //documented
+        add_shortcode('email', array($this, 'Email')); //documented
+        add_shortcode('archive', array($this, 'Archive')); //documented
+        add_shortcode('markdown', array($this, 'MarkDown'));  //documented
+        add_shortcode('loginlogout', array($this, 'LoginLogoutLink')); //documented
+        add_shortcode('registerlink', array($this, 'RegisterLink')); //documented
+        add_shortcode('note', array($this, 'Note')); //documented
+        add_shortcode('drivefolder-list', array($this, 'GoogleDriveList')); //documented
+        add_shortcode('drivefolder-grid', array($this, 'GoogleDriveList')); //documented
+        add_shortcode('logedin', array($this, 'IsLogedInConent')); //documented
+        add_shortcode('notlogedin', array($this, 'IsNOTLogedInConent')); //documented
+        add_shortcode('csvtable', array($this, 'CsvTable')); //documented
+        add_shortcode('circleprogress', array($this, 'CircleProgress')); //documented
+        add_shortcode('tagcloud', array($this, 'TagCloud')); //documented
         //editor menü
         add_action( 'admin_init', array($this, 'RegisterMenu'));
         //admin menü
@@ -155,10 +156,19 @@ class ShortCodePlugin
         return ob_get_clean();
     }
     
-    public function IsLogedInConent($atts , $content = null) {
+    public function IsLogedInConent($atts, $content = null) {
         ob_start();
-        $login = is_user_logged_in();
+        $login = is_user_logged_in() && !is_null( $content ) && !is_feed();
         if ($login) {
+            echo $content;
+        }
+        return ob_get_clean();
+    }
+
+    public function IsNOTLogedInConent($atts, $content = null) {
+        ob_start();
+        $login = !is_user_logged_in() && !is_null( $content ) && !is_feed();
+        if (!$login) {
             echo $content;
         }
         return ob_get_clean();

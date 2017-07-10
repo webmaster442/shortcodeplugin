@@ -14,7 +14,7 @@ Kilistázza egy publikusan megosztott Google Drive mappa tartalmát. Két param�
  * height -> A beágyazott mappa nézet magassága. Ha nincs megadva, alapértelmezetten 600px
  
 ## [archive]
-Az oldalon közzétett összes bejegyzést kilistázza egy oldalon, létrehozva egy bejegyzés archívumot. Az archívum csoportosítása éves bontással jelenik meg
+Az oldalon közzétett összes bejegyzést kilistázza egy oldalon, létrehozva egy bejegyzés archívumot. Az archívum csoportosítása éves vagy kategória bontással jelenik meg
 
 ## [markdown]
 Ezen blokk között elhelyezett kódot Markdown forráskódként értelmezi és ebből generál HTML kódot. A HTML generálásra a http://parsedown.org/ értelmező használódik.
@@ -30,6 +30,21 @@ Felhasználói regiszrációt lehetővé tévő link. Csak akkor jelenik meg, ha
 
 ## [note]
 Lábjlegyzet létrehozása. A lábjegyzetek az oldal végén összesítve mejelennek.
+
+## [tagcloud]
+Cimke felhő generálása.
+
+## [circleprogress]
+Kör alakú folyamat jelzőt készít
+
+## [csvtable]
+CSV formázott szövegből HTML táblázatot készít, amely bármlely oszlopa szerint rendezhető.
+
+## [logedin]
+Csak bejelentkezett felhasználók számára látható tartalmat jelöl
+
+## [notlogedin]
+Csak nem bejelentkezett felhasználók számára látható tartalmat jelöl
 
 ## Szintaxis kiemelés
 Támogatott nyelvek: markdown, css, js, typescript, csharp, c, c++, f#, bash, git

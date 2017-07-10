@@ -28,6 +28,7 @@ class ShortCodePlugin
         add_shortcode('logedin', array($this, 'IsLogedInConent'));
         add_shortcode('csvtable', array($this, 'CsvTable'));
         add_shortcode('circleprogress', array($this, 'CircleProgress'));
+        add_shortcode('tagcloud', array($this, 'TagCloud'));
         //editor menü
         add_action( 'admin_init', array($this, 'RegisterMenu'));
         //admin menü
@@ -181,6 +182,13 @@ class ShortCodePlugin
         echo '<div class="bar"></div>';
         echo '<div class="fill"></div>';
         echo '</div></div>';
+        return ob_get_clean();
+    }
+
+    public function TagCloud($atts, $content = null) {
+        $a = shortcode_atts( array('smallest' => '8', 'largest' => '22', 'unit' => 'pt', 'number' => 45, 'format' => 'flat', 'orderby' => 'name', 'order' => 'ASC'), $atts );
+        ob_start();
+        wp_tag_cloud($a);
         return ob_get_clean();
     }
     

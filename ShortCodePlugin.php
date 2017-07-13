@@ -89,13 +89,16 @@ class ShortCodePlugin
     public function SubPages($atts) {
         ob_start();
         $a = shortcode_atts( array('wrap' => ''), $atts );
-        echo "<". $a['wrap']. ">\n";
+        if ($a['wrap'] != '')
+                echo "<". $a['wrap']. ">\n";
         echo "<ul>\n";
         wp_list_pages(array(
                           'title_li'    => '',
                           'sort_column' => 'menu_order',
                           'child_of' => get_the_ID()));
         echo "</ul>\n";
+        if ($a['wrap'] != '')
+                echo "</". $a['wrap']. ">\n";
         return ob_get_clean();
     }
 

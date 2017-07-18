@@ -75,12 +75,12 @@ class ArchiveGenerator
             $haschilds = count($sub) > 0;
             $this->renderSubCat($cat_id);
             if ($haschilds) {
-                echo '<details>';
                 foreach ($sub as $subcat) {
+					echo '<details>';
                     echo '<summary>' .$subcat->name. '</summary>';
                     $this->renderSubCat($subcat->term_id);
+					echo '</details>';
                 }
-                echo '</details>';
             }
             echo '</details>';
         }

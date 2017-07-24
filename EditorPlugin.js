@@ -30,60 +30,6 @@ ShortCode Plugin Wordpress Editor plugin
                         }
                     },
                     {
-                        text: 'E-mail',
-                        onclick: function () {
-                            var selected_text = ed.selection.getContent();
-                            if (selected_text.length < 1) {
-                                alert("Először jelölj ki egy szöveget, amit átalakítani szeretnél");
-                                return;
-                            }
-                            var wrapped = '[email]' + selected_text + '[/email]';
-                            ed.insertContent(wrapped);
-                        }
-                    },
-                    {
-                        text: 'Bejelentkezett tartalom',
-                        onclick: function () {
-                            var selected_text = ed.selection.getContent();
-                            if (selected_text.length < 1) {
-                                alert("Először jelölj ki egy szöveget, ami csak a bejelentkezett felhasználóknak lesz látható");
-                                return;
-                            }
-                            var wrapped = '[logedin]' + selected_text + '[/logedin]';
-                            ed.insertContent(wrapped);
-                        }
-                    },
-                    {
-                        text: 'Google Drive Mappa - Lista',
-                        onclick: function () {
-                            ed.windowManager.open({
-                                title: 'Google Drive Ikon nézet',
-                                body: [{ type: 'textbox', name: 'id', label: 'Mappa ID' },
-                                { type: 'textbox', name: 'height', label: 'Magasság', value: '600px' },],
-                                onsubmit: function (e) {
-                                    ed.focus();
-                                    var t = '[drivefolder-list id="' + e.data.id + '" height="' + e.data.height + '"]';
-                                    ed.insertContent(t);
-                                }
-                            })
-                        }
-                    },
-                    {
-                        text: 'Google Drive Mappa - Ikonok',
-                        onclick: function () {
-                            ed.windowManager.open({
-                                title: 'Google Drive Ikon nézet',
-                                body: [{ type: 'textbox', name: 'id', label: 'Mappa ID' },
-                                { type: 'textbox', name: 'height', label: 'Magasság', value: '600px' },],
-                                onsubmit: function (e) {
-                                    ed.focus();
-                                    var t = '[drivefolder-grid id="' + e.data.id + '" height="' + e.data.height + '"]';
-                                    ed.insertContent(t);
-                                }
-                            })
-                        }
-                    },
-                    {
                         text: 'Archívum',
                         onclick: function () {
                             ed.windowManager.open({
@@ -116,29 +62,6 @@ ShortCode Plugin Wordpress Editor plugin
                                     ed.insertContent(t);
                                 }
                             })
-                        }
-                    },
-                    {
-                        text: 'Markdown',
-                        onclick: function () {
-                            var selected_text = ed.selection.getContent();
-                            if (selected_text.length < 1) {
-                                ed.windowManager.open({
-                                    title: 'Markdown beillesztése',
-                                    width: 500,
-                                    height: 400,
-                                    body: [{ type: 'textbox', multiline: true, name: 'source', label: 'Markdown szöveg', style: 'height: 250px' }],
-                                    onsubmit: function (e) {
-                                        ed.focus()
-                                        var md = e.data.source;
-                                        ed.selection.setContent('[markdown]' + md + '[/markdown]');
-                                    }
-                                })
-                            }
-                            else {
-                                var wrapped = '[markdown]' + selected_text + '[/markdown]';
-                                ed.insertContent(wrapped);
-                            }
                         }
                     },
                     {
@@ -177,6 +100,79 @@ ShortCode Plugin Wordpress Editor plugin
                         text: 'Regisztrációs link',
                         onclick: function () {
                             ed.insertContent('[registerlink]');
+                        }
+                    }
+                ]
+            });
+            ed.addButton('button_codes2', {
+                type: 'splitbutton',
+                title: 'További Kódok',
+                image: url + '/code-brackets.png',
+                onclick: function () { alert("Válassz a legördülő menüből beillesztendő kódot"); },
+                menu: [
+                    {
+                        text: 'E-mail cím védelme',
+                        onclick: function () {
+                            var selected_text = ed.selection.getContent();
+                            if (selected_text.length < 1) {
+                                alert("Először jelölj ki egy szöveget, amit átalakítani szeretnél");
+                                return;
+                            }
+                            var wrapped = '[email]' + selected_text + '[/email]';
+                            ed.insertContent(wrapped);
+                        }
+                    },
+                    {
+                        text: 'Google Drive Mappa - Lista',
+                        onclick: function () {
+                            ed.windowManager.open({
+                                title: 'Google Drive Ikon nézet',
+                                body: [{ type: 'textbox', name: 'id', label: 'Mappa ID' },
+                                { type: 'textbox', name: 'height', label: 'Magasság', value: '600px' },],
+                                onsubmit: function (e) {
+                                    ed.focus();
+                                    var t = '[drivefolder-list id="' + e.data.id + '" height="' + e.data.height + '"]';
+                                    ed.insertContent(t);
+                                }
+                            })
+                        }
+                    },
+                    {
+                        text: 'Google Drive Mappa - Ikonok',
+                        onclick: function () {
+                            ed.windowManager.open({
+                                title: 'Google Drive Ikon nézet',
+                                body: [{ type: 'textbox', name: 'id', label: 'Mappa ID' },
+                                { type: 'textbox', name: 'height', label: 'Magasság', value: '600px' },],
+                                onsubmit: function (e) {
+                                    ed.focus();
+                                    var t = '[drivefolder-grid id="' + e.data.id + '" height="' + e.data.height + '"]';
+                                    ed.insertContent(t);
+                                }
+                            })
+                        }
+                    },
+                    {
+                        text: 'Markdown',
+                        onclick: function () {
+                            var selected_text = ed.selection.getContent();
+                            if (selected_text.length < 1) {
+                                ed.windowManager.open({
+                                    title: 'Markdown beillesztése',
+                                    width: 500,
+                                    height: 400,
+                                    body: [{ type: 'textbox', multiline: true, name: 'source', label: 'Markdown szöveg', style: 'height: 250px' }],
+                                    onsubmit: function (e) {
+                                        ed.focus()
+                                        var md = e.data.source;
+                                        ed.selection.setContent('[markdown]' + md + '[/markdown]');
+                                    }
+                                })
+                            }
+                            else {
+                                var wrapped = '[markdown]' + selected_text + '[/markdown]';
+                                ed.insertContent(wrapped);
+                            }
                         }
                     },
                     {

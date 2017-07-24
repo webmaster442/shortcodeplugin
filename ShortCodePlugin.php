@@ -75,7 +75,7 @@ class ShortCodePlugin
     }
 
     public function RegisterButton( $buttons ) {
-        array_push( $buttons, "button_codes" );
+        array_push( $buttons, "button_codes", "button_codes2");
         return $buttons;
     }
     

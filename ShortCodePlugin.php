@@ -30,8 +30,8 @@ class ShortCodePlugin
         add_shortcode('csvtable', array($this, 'CsvTable')); //documented
         add_shortcode('circleprogress', array($this, 'CircleProgress')); //documented
         add_shortcode('tagcloud', array($this, 'TagCloud')); //documented
-        //editor menü
-        add_action( 'admin_init', array($this, 'RegisterMenu'));
+        //editor menü & settings
+        add_action( 'admin_init', array($this, 'AdminInit'));
         //admin menü
         add_action('admin_menu', array($this, 'RegisterAdminMenu'));
         //Regisztráljuk a js & css fájlokat amik kód függőek
@@ -67,7 +67,7 @@ class ShortCodePlugin
         echo $Parsedown->text($content);;
     }
 
-    public function RegisterMenu() {
+    public function AdminInit() {
         if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
             add_filter( 'mce_buttons', array($this, 'RegisterButton') );
             add_filter( 'mce_external_plugins', array($this, 'AddButton') );

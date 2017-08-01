@@ -235,7 +235,7 @@ ShortCode Plugin Wordpress Editor plugin
                                     { type: 'textbox', multiline: true, name: 'csv', label: 'csv adat:', style: 'height: 250px' }],
                                     onsubmit: function (e) {
                                         ed.focus();
-                                        var csv = '[csvtable delimiter="' + e.data.divider + '"]' + ed.data.csv + '[/csvtable]';
+                                        var csv = '[csvtable delimiter="' + e.data.divider + '"]' + e.data.csv + '[/csvtable]';
 
                                         ed.insertContent(csv);
                                     }

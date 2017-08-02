@@ -1,14 +1,5 @@
 <?php
-/*
-Plugin Name: ShortCode Plugin
-Description: Hasznos shortcode-ok
-Version: 2.5
-Author: Ruzsinszki Gábor
-Author URI: https://webmaster442.hu
-License: GPL2
-*/
-
-class ShortCodePlugin
+class ShortCodes
 {
     public $footnotes = array();
     public $footnoteCount = 0;
@@ -32,8 +23,6 @@ class ShortCodePlugin
         add_shortcode('tagcloud', array($this, 'TagCloud')); //documented
         //editor menü & settings
         add_action( 'admin_init', array($this, 'AdminInit'));
-        //admin menü
-        add_action('admin_menu', array($this, 'RegisterAdminMenu'));
         //Regisztráljuk a js & css fájlokat amik kód függőek
         add_action('wp_enqueue_scripts', array($this, 'RegisterJSCSS'));
         //a többit meg hozzáadjuk
@@ -51,20 +40,6 @@ class ShortCodePlugin
         wp_register_style( 'tablesorterstyle', plugins_url( '/assets/tablesorter.css' , __FILE__ ), null, false, false );
         wp_register_style( 'circlestyle', plugins_url( '/assets/circle.css' , __FILE__ ), null, false, false );
         wp_register_style( 'colapse', plugins_url( '/assets/colapse.css' , __FILE__ ), null, false, false );
-    }
-    
-    public function RegisterAdminMenu() {
-        add_options_page( 'ShortCode plugin', 'ShortCodePlugin', 'edit_posts', 'ShortCodePluginOptions', array($this, 'ShortCodeOptionsMenu') );
-    }
-    
-    public function ShortCodeOptionsMenu() {
-        if ( !current_user_can( 'manage_options' ) )  {
-            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-        }
-        require_once('Parsedown.php');
-        $Parsedown = new Parsedown();
-        $content = $this->GetContent('README.md');
-        echo $Parsedown->text($content);;
     }
 
     public function AdminInit() {
@@ -251,12 +226,6 @@ class ShortCodePlugin
                'Felhasználó: ' . $user->user_email . ' ' .$user->display_name .'</div>';
     }
 
-    private function GetContent($filename) {
-        ob_start();
-        include $filename;
-        return ob_get_clean();
-    }
-
     public function NoteAfterContent($content) {
         if (is_singular() && is_main_query()) {
             $footnotesInsert = $this->footnotes;
@@ -275,5 +244,4 @@ class ShortCodePlugin
         return $content;
     }
 }
-$shortcodes = new ShortCodePlugin();
 ?>

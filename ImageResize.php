@@ -20,11 +20,13 @@ class ImageResize
 
         $convert_png_to_jpg = (get_option('w442fw_resizeupload_convertpng_yesno')=='yes') ? true : false;
         $convert_gif_to_jpg = (get_option('w442fw_resizeupload_convertgif_yesno')=='yes') ? true : false;
-        $convert_bmp_to_jpg = (get_option('w442fw_resizeupload_convertbmp_yesno')=='yes') ? true : false;
         
-        if($convert_png_to_jpg && $image_data['type'] == 'image/png' ) {
-            $image_data = $this->ConvertImage( $image_data, $compression_level );
+        if($convert_png_to_jpg && $image_data['type'] == 'image/png') {
+			$image_data = $this->ConvertImage( $image_data, $compression_level, 'png');
         }
+		if ($convert_gif_to_jpg && $image_data['type'] == 'image/gif') {
+			$image_data = $this->ConvertImage( $image_data, $compression_level, 'gif');
+		}
         
         if($resizing_enabled || $force_jpeg_recompression) 
         {
@@ -101,19 +103,29 @@ class ImageResize
         return $image_data;
     }
 
-    private function ConvertImage( $params, $compression_level )
+    private function ConvertImage( $params, $compression_level, $format )
     {
-        $transparent = 0;
-        $image = $params['file'];
-        $contents = file_get_contents( $image );
+		if ($format != 'png' && $format != 'gif')
+			die("not png or gif");
+		
+		if ($format == 'png')
+		{
+			$transparent = 0;
+			$image = $params['file'];
+			$contents = file_get_contents( $image );
         
-        if ( ord ( file_get_contents( $image, false, null, 25, 1 ) ) & 4 ) $transparent = 1;
-        if ( stripos( $contents, 'PLTE' ) !== false && stripos( $contents, 'tRNS' ) !== false ) $transparent = 1;
+			if ( ord ( file_get_contents( $image, false, null, 25, 1 ) ) & 4 ) $transparent = 1;
+			if ( stripos( $contents, 'PLTE' ) !== false && stripos( $contents, 'tRNS' ) !== false ) $transparent = 1;
         
-        $transparent_pixel = $img = $bg = false;
+			$transparent_pixel = $img = $bg = false;
+		}
         if($transparent) 
         {
-            $img = imagecreatefrompng($params['file']);
+			if ($format == 'png')
+				$img = imagecreatefrompng($params['file']);
+			else
+				$img = imagecreatefromgif($params['file']);
+			
             $w = imagesx($img); // Get the width of the image
             $h = imagesy($img); // Get the height of the image
             //run through pixels until transparent pixel is found:
@@ -133,7 +145,11 @@ class ImageResize
         
         if( !$transparent || !$transparent_pixel)
         {
-            if(!$img) $img = imagecreatefrompng($params['file']);
+            if ($format == 'png')
+				$img = imagecreatefrompng($params['file']);
+			else
+				$img = imagecreatefromgif($params['file']);
+			
             $bg = imagecreatetruecolor(imagesx($img), imagesy($img));
             imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
             imagealphablending($bg, 1);

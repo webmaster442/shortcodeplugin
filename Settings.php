@@ -3,8 +3,19 @@
         $value = get_option($name);
         if ($value == "yes") echo("checked");
     }
+	
+	function SaveSettings() {
+		 if(!isset($_POST['save'])) return;
+		 $resizing_enabled = trim(esc_sql($_POST['yesno']));
+		 $force_jpeg_recompression = trim(esc_sql($_POST['recompress_yesno']));
+		 $max_width = trim(esc_sql($_POST['maxwidth']));
+		 $max_height  = trim(esc_sql($_POST['maxheight']));
+		 $compression_level = trim(esc_sql($_POST['quality']));
+		 $convert_png_to_jpg = trim(esc_sql(isset($_POST['convertpng']) ? $_POST['convertpng'] : 'no'));
+		 $convert_gif_to_jpg = trim(esc_sql(isset($_POST['convertgif']) ? $_POST['convertgif'] : 'no'));
+	}
 ?>
-<form method="post">
+<form method="post" accept-charset="utf-8">
     <h1>Általános beállítások</h1>
     <hr />
     <table>
@@ -64,4 +75,5 @@
             </td>
         </tr>
     </table>
+	<input name="save" class="button button-primary" type="submit" value="Beállítások mentése">
 </form>

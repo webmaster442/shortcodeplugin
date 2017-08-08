@@ -50,12 +50,12 @@ ShortCode Plugin Wordpress Editor plugin
                             ed.windowManager.open({
                                 title: 'Cimkefelhő létrehozása',
                                 body: [{ type: 'textbox', name: 'smallest', label: 'Legkisebb méret: ', value: '8' },
-                                       { type: 'textbox', name: 'largest', label: 'Legnagyobb méret: ', value: '22' },
-                                       { type: 'listbox', name: 'unit', label: 'Mértékegység :', onselect: function (e) { }, 'values': [{ text: 'pt', value: 'pt' }, { text: 'em', value: 'em' }, { text: '%', value: '%' }] },
-                                       { type: 'textbox', name: 'number', label: 'Cimkék száma: ', value: '45' },
-                                       { type: 'listbox', name: 'format', label: 'Formátum :', onselect: function (e) { }, 'values': [{ text: 'Flat', value: 'flat' }, { text: 'list', value: 'list' }] },
-                                       { type: 'listbox', name: 'orderby', label: 'Rendezés :', onselect: function (e) { }, 'values': [{ text: 'Név', value: 'name' }, { text: 'Darab', value: 'count' }] },
-                                       { type: 'listbox', name: 'order', label: 'Rendezési szempont :', onselect: function (e) { }, 'values': [{ text: 'Növekvő', value: 'ASC' }, { text: 'Csökkenő', value: 'DESC' }, { text: 'Véletlen', value: 'RAND' }] } ],
+                                { type: 'textbox', name: 'largest', label: 'Legnagyobb méret: ', value: '22' },
+                                { type: 'listbox', name: 'unit', label: 'Mértékegység :', onselect: function (e) { }, 'values': [{ text: 'pt', value: 'pt' }, { text: 'em', value: 'em' }, { text: '%', value: '%' }] },
+                                { type: 'textbox', name: 'number', label: 'Cimkék száma: ', value: '45' },
+                                { type: 'listbox', name: 'format', label: 'Formátum :', onselect: function (e) { }, 'values': [{ text: 'Flat', value: 'flat' }, { text: 'list', value: 'list' }] },
+                                { type: 'listbox', name: 'orderby', label: 'Rendezés :', onselect: function (e) { }, 'values': [{ text: 'Név', value: 'name' }, { text: 'Darab', value: 'count' }] },
+                                { type: 'listbox', name: 'order', label: 'Rendezési szempont :', onselect: function (e) { }, 'values': [{ text: 'Növekvő', value: 'ASC' }, { text: 'Csökkenő', value: 'DESC' }, { text: 'Véletlen', value: 'RAND' }] }],
                                 onsubmit: function (e) {
                                     ed.focus();
                                     var t = '[tagcloud smallest="' + e.data.smallest + '" largest="' + e.data.largest + '" unit="' + e.data.unit + '" number="' + e.data.number + '" format="' + e.data.format + '" orderby="' + e.data.orderby + '" order="' + e.data.order + '"   /]';
@@ -182,7 +182,13 @@ ShortCode Plugin Wordpress Editor plugin
                             if (selected_text.length > 0) {
                                 ed.windowManager.open({
                                     title: 'Forráskód beillesztése',
-                                    body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
+                                    body: [{
+                                        type: 'listbox', name: 'language', label: 'Nyelv:', onselect: function (e) { }, 'values':
+                                        [{ text: 'HTML', value: 'markup' }, { text: 'CSS', value: 'css' }, { text: 'JavaScript', value: 'javascript' },
+                                        { text: 'C', value: 'c' }, { text: 'C++', value: 'cpp' }, { text: 'C#', value: 'csharp' },
+                                        { text: 'ASP.NET', value: 'aspnet' }, { text: 'Bash', value: 'bash' },
+                                        { text: 'F#', value: 'fsharp' }, { text: 'GIT', value: 'git' }, { text: 'LESS', value: 'less' }, { text: 'TypeScript', value: 'typescript' }]
+                                    },
                                     { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: false },
                                     { type: 'checkbox', name: 'needescape', text: 'Speciális karakterek konvertálása', checked: false }],
                                     onsubmit: function (e) {
@@ -203,7 +209,13 @@ ShortCode Plugin Wordpress Editor plugin
                                     title: 'Forráskód beillesztése',
                                     width: 500,
                                     height: 400,
-                                    body: [{ type: 'textbox', name: 'language', label: 'Nyelv' },
+                                    body: [{
+                                        type: 'listbox', name: 'language', label: 'Nyelv:', onselect: function (e) { }, 'values':
+                                        [{ text: 'HTML', value: 'markup' }, { text: 'CSS', value: 'css' }, { text: 'JavaScript', value: 'javascript' },
+                                        { text: 'C', value: 'c' }, { text: 'C++', value: 'cpp' }, { text: 'C#', value: 'csharp' },
+                                        { text: 'ASP.NET', value: 'aspnet' }, { text: 'Bash', value: 'bash' },
+                                        { text: 'F#', value: 'fsharp' }, { text: 'GIT', value: 'git' }, { text: 'LESS', value: 'less' }, { text: 'TypeScript', value: 'typescript' }]
+                                    },
                                     { type: 'checkbox', name: 'linenumbers', text: 'Sorok számozása', checked: true },
                                     { type: 'checkbox', name: 'needescape', text: 'Speciális karakterek konvertálása', checked: true },
                                     { type: 'textbox', multiline: true, name: 'source', label: 'Forrráskód', style: 'height: 250px' }],
@@ -260,8 +272,8 @@ ShortCode Plugin Wordpress Editor plugin
                             ed.windowManager.open({
                                 title: 'Folyamatjelző beszúrása',
                                 body: [{ type: 'listbox', name: 'size', label: 'Méret :', onselect: function (e) { }, 'values': [{ text: 'Kicsi', value: 'small' }, { text: 'Normál', value: 'normal' }, { text: 'Nagy', value: 'big' }] },
-                                       { type: 'listbox', name: 'color', label: 'Szín :', onselect: function (e) { }, 'values': [{ text: 'Kék', value: 'blue' }, { text: 'Zöld', value: 'green' }, { text: 'Narancs', value: 'orange' }] },
-                                       { type: 'textbox', name: 'progress', label: '%: ', value: '100' }],
+                                { type: 'listbox', name: 'color', label: 'Szín :', onselect: function (e) { }, 'values': [{ text: 'Kék', value: 'blue' }, { text: 'Zöld', value: 'green' }, { text: 'Narancs', value: 'orange' }] },
+                                { type: 'textbox', name: 'progress', label: '%: ', value: '100' }],
                                 onsubmit: function (e) {
                                     ed.focus();
                                     var pt = '[circleprogress progress="' + e.data.progress + '" size="' + e.data.size + '" color="' + e.data.color + '"/]';

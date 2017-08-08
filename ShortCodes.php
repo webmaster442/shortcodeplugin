@@ -21,6 +21,7 @@ class ShortCodes
         add_shortcode('csvtable', array($this, 'CsvTable')); //documented
         add_shortcode('circleprogress', array($this, 'CircleProgress')); //documented
         add_shortcode('tagcloud', array($this, 'TagCloud')); //documented
+		add_shortcode('mixcloud', array($this, 'MixCloud'));
         //editor menü & settings
         add_action( 'admin_init', array($this, 'AdminInit'));
         //Regisztráljuk a js & css fájlokat amik kód függőek
@@ -184,6 +185,21 @@ class ShortCodes
         wp_tag_cloud($a);
         return ob_get_clean();
     }
+	
+	public function MixCloud($atts, $content=null) {
+		$a = shortcode_atts( array('theme' => 'dark', 'type' => 'picture'), $atts );
+		ob_start();
+		$link = urlencode($content);
+		if ($a['theme']=='light')
+			$link .= '&light=1';
+		if ($a['type'] == 'picture')
+			echo('<iframe width="100%" height="400" src="https://www.mixcloud.com/widget/iframe/?feed='.$link.'" frameborder="0"></iframe>');
+		else if ($a['type'] == 'classic')
+			echo('<iframe width="100%" height="120" src="https://www.mixcloud.com/widget/iframe/?feed='.$link.'&hide_cover=1" frameborder="0"></iframe>');
+		else if ($a['type'] == 'mini')
+			echo('<iframe width="100%" height="60" src="https://www.mixcloud.com/widget/iframe/?feed='.$link.'&hide_cover=1&mini=1" frameborder="0"></iframe>');
+		return ob_get_clean();
+	}
     
     public function Note($atts , $content = null) {
         wp_enqueue_style( 'qtipstyles' );
@@ -239,7 +255,8 @@ class ShortCodes
             if (!empty($footnotesInsert)) {
                     $content .= '<div class="easy-footnote-title"><h4>Lábjegyzetek</h4></div><ol class="easy-footnotes-wrapper">'.$footnoteCopy.'</ol>';
             }
-            $content .= $this->CoppyRightText();
+			if (get_option('w442fw_usernameend_yesno') == 'yes')
+				$content .= $this->CoppyRightText();
         }
         return $content;
     }

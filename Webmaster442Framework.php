@@ -24,8 +24,8 @@ function DLog($message) {
 
 if(!get_option('w442fw_version') || (get_option('w442fw_version')  != FRAMEWORKVERSION)) {
     add_option('w442fw_version', FRAMEWORKVERSION, '','yes');
-    add_option('w442fw_debug', 'no', '','yes');
-    add_option('w442fw_usernameend', 'no', '', 'yes');
+    add_option('w442fw_debug_yesno', 'no', '','yes');
+    add_option('w442fw_usernameend_yesno', 'no', '', 'yes');
     add_option('w442fw_resizeupload_width', '1200', '', 'yes');
     add_option('w442fw_resizeupload_height', '1200', '', 'yes');
     add_option('w442fw_resizeupload_quality', '90', '', 'yes');
@@ -35,7 +35,7 @@ if(!get_option('w442fw_version') || (get_option('w442fw_version')  != FRAMEWORKV
     add_option('w442fw_resizeupload_convertgif_yesno', 'no', '', 'yes');
 }
 
-$LOGENABLED = (get_option('w442fw_debug')=='yes') ? true : false;
+$LOGENABLED = (get_option('w442fw_debug_yesno')=='yes') ? true : false;
 
 class Webmaster442Framework {
     

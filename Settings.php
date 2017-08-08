@@ -6,14 +6,24 @@
 	
 	function SaveSettings() {
 		 if(!isset($_POST['save'])) return;
-		 $resizing_enabled = trim(esc_sql($_POST['yesno']));
-		 $force_jpeg_recompression = trim(esc_sql($_POST['recompress_yesno']));
-		 $max_width = trim(esc_sql($_POST['maxwidth']));
-		 $max_height  = trim(esc_sql($_POST['maxheight']));
-		 $compression_level = trim(esc_sql($_POST['quality']));
-		 $convert_png_to_jpg = trim(esc_sql(isset($_POST['convertpng']) ? $_POST['convertpng'] : 'no'));
-		 $convert_gif_to_jpg = trim(esc_sql(isset($_POST['convertgif']) ? $_POST['convertgif'] : 'no'));
+		 $safe = array();
+		 foreach ($_POST as $key => $value)
+		 {
+			 $safevalue =  trim(esc_sql($value));
+			 if ($safevalue == "on") $safevalue = "yes";
+			 $safe[$key] = $safevalue;
+		 }
+		 update_option('w442fw_debug_yesno', $safe['cb_debug']);
+		 update_option('w442fw_usernameend_yesno', $safe['cb_endusername']);
+		 update_option('w442fw_resizeupload_resize_yesno', $safe['cb_resizeenambed']);
+		 update_option('w442fw_resizeupload_width', $safe['img_w']);
+		 update_option('w442fw_resizeupload_height', $safe['img_h']);
+		 update_option('w442fw_resizeupload_quality', $safe['jpg_q']);
+		 update_option('w442fw_resizeupload_recompress_yesno', $safe['cb_force_jpeg']);
+		 update_option('w442fw_resizeupload_convertpng_yesno', $safe['cb_force_png']);
+		 update_option('w442fw_resizeupload_convertgif_yesno', $safe['cb_force_gif']);
 	}
+	 SaveSettings();
 ?>
 <form method="post" accept-charset="utf-8">
     <h1>Általános beállítások</h1>
@@ -22,13 +32,15 @@
         <tr>
             <td>Hibakersés (Debug) Mód</td>
             <td>
-                <input type="checkbox" name="cb_debug" <?php GetBinarySetting('w442fw_debug'); ?> />
+				<input type='hidden' value='no' name='cb_debug'>
+                <input type="checkbox" name="cb_debug" <?php GetBinarySetting('w442fw_debug_yesno'); ?> />
             </td>
         </tr>
         <tr>
             <td>Felhasználónév beírása a tartalom végére</td>
             <td>
-                <input type="checkbox" name="cb_endusername" <?php GetBinarySetting('w442fw_usernameend'); ?> />
+				<input type='hidden' value='no' name='cb_endusername'>
+                <input type="checkbox" name="cb_endusername" <?php GetBinarySetting('w442fw_usernameend_yesno'); ?> />
             </td>
         </tr>
     </table>
@@ -38,6 +50,7 @@
         <tr>
             <td>Kép átméretezés engedélyezése</td>
             <td>
+				<input type='hidden' value='no' name='cb_resizeenambed'>
                 <input type="checkbox" name="cb_resizeenambed" <?php GetBinarySetting('w442fw_resizeupload_resize_yesno'); ?>  />
             </td>
         </tr>
@@ -59,21 +72,25 @@
         <tr>
             <td>JPEG fájlok kényszerített újratörmörítése</td>
             <td>
+				<input type='hidden' value='no' name='cb_force_jpeg'>
                 <input type="checkbox" name="cb_force_jpeg" <?php GetBinarySetting('w442fw_resizeupload_recompress_yesno'); ?> />
             </td>
         </tr>
         <tr>
             <td>PNG fájlok átalakítása JPEG formátumba</td>
             <td>
+				<input type='hidden' value='no' name='cb_force_png'>
                 <input type="checkbox" name="cb_force_png" <?php GetBinarySetting('w442fw_resizeupload_convertpng_yesno'); ?> />
             </td>
         </tr>
         <tr>
             <td>GIF fájlok átalakítása JPEG formátumba</td>
             <td>
+				<input type='hidden' value='no' name='cb_force_gif'>
                 <input type="checkbox" name="cb_force_gif" <?php GetBinarySetting('w442fw_resizeupload_convertgif_yesno'); ?> />
             </td>
         </tr>
     </table>
+	<hr/>
 	<input name="save" class="button button-primary" type="submit" value="Beállítások mentése">
 </form>

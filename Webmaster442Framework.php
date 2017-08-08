@@ -60,7 +60,10 @@ class Webmaster442Framework {
         ob_start();
         echo('<h1>Webmaster442 Framework '.FRAMEWORKVERSION. '</h1>');
         echo('<hr/>');
-        echo('<h3>Válassz az almenükből!</h3>');
+		$Parsedown = new Parsedown();
+		$content = $this->GetContent('README.md');
+		echo $Parsedown->text($content);
+        echo('<hr/><h1>Válassz az almenükből a beállítások módosításához!</h1>');
         ob_end_flush();
     }
     

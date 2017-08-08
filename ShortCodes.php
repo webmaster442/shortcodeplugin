@@ -21,7 +21,7 @@ class ShortCodes
         add_shortcode('csvtable', array($this, 'CsvTable')); //documented
         add_shortcode('circleprogress', array($this, 'CircleProgress')); //documented
         add_shortcode('tagcloud', array($this, 'TagCloud')); //documented
-		add_shortcode('mixcloud', array($this, 'MixCloud'));
+		add_shortcode('mixcloud', array($this, 'MixCloud')); //documented
         //editor menü & settings
         add_action( 'admin_init', array($this, 'AdminInit'));
         //Regisztráljuk a js & css fájlokat amik kód függőek

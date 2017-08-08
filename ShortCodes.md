@@ -40,6 +40,9 @@ Csak bejelentkezett felhasználók számára látható tartalmat jelöl
 ## [notlogedin]
 Csak nem bejelentkezett felhasználók számára látható tartalmat jelöl
 
+## [mixcloud]
+Mixcloud-ról egyszerűbb beillesztést tesz lehetővé. Jelenleg a WP mixcloud támogatása valamiért törött.
+
 ## Szintaxis kiemelés
 Támogatott nyelvek: markdown, css, js, typescript, csharp, c, c++, f#, bash, git
 ```html

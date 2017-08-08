@@ -283,6 +283,22 @@ ShortCode Plugin Wordpress Editor plugin
                         }
                     },
                     {
+                        text: 'Mixcloud',
+                        onclick: function () {
+                            ed.windowManager.open({
+                                title: 'Beillesztés Mixcloudról',
+                                body: [{ type: 'listbox', name: 'type', label: 'Típus :', onselect: function (e) { }, 'values': [{ text: 'Classic', value: 'classic' }, { text: 'Picture', value: 'picture' }, { text: 'Mini', value: 'mini' }] },
+                                { type: 'listbox', name: 'color', label: 'Szín :', onselect: function (e) { }, 'values': [{ text: 'Dark', value: 'dark' }, { text: 'Light', value: 'light' }] },
+                                { type: 'textbox', name: 'url', label: 'URL:', value: '' }],
+                                onsubmit: function (e) {
+                                    ed.focus();
+                                    var ct = '[mixcloud theme="' + e.data.color + '" type="' + e.data.type + '"]' + e.data.url + '[/mixcloud]';
+                                    ed.insertContent(ct);
+                                }
+                            })
+                        }
+                    },
+                    {
                         text: 'Lábjegyzet',
                         onclick: function () {
                             var selected_text = ed.selection.getContent();

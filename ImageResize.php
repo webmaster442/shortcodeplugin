@@ -9,7 +9,7 @@ class ImageResize
         add_action('wp_handle_upload', array($this, 'ResizeUpload'));
     }
 
-    public function ResizeUpload() 
+    public function ResizeUpload($image_data) 
     {
         DLog("KÉP Átméretezés kezdése");
         $resizing_enabled = ( get_option('w442fw_resizeupload_resize_yesno')=='yes') ? true : false;

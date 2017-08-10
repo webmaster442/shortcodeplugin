@@ -2,7 +2,7 @@
 /*
 Plugin Name: Webmaster442 Framework
 Description: Webmaster442's Wordpress extension Framework
-Version: 1.0
+Version: 1.1
 Author: Ruzsinszki Gábor
 Author URI: https://webmaster442.hu
 License: GPL2
@@ -12,7 +12,7 @@ require_once('ImageResize.php');
 require_once('Parsedown.php');
 
 //globális cuccok
-define('FRAMEWORKVERSION', '1.0');
+define('FRAMEWORKVERSION', '1.1');
 
 function DLog($message) {
   global $LOGENABLED;
@@ -33,6 +33,8 @@ if(!get_option('w442fw_version') || (get_option('w442fw_version')  != FRAMEWORKV
     add_option('w442fw_resizeupload_recompress_yesno', 'no', '','yes');
     add_option('w442fw_resizeupload_convertpng_yesno', 'no', '', 'yes');
     add_option('w442fw_resizeupload_convertgif_yesno', 'no', '', 'yes');
+    add_option('w442fw_facebookshare_endpost_yesno', 'no', '', 'yes');
+    add_option('w442fw_copyprotect_yesno', 'no', '', 'yes');
 }
 
 $LOGENABLED = (get_option('w442fw_debug_yesno')=='yes') ? true : false;
@@ -60,9 +62,9 @@ class Webmaster442Framework {
         ob_start();
         echo('<h1>Webmaster442 Framework '.FRAMEWORKVERSION. '</h1>');
         echo('<hr/>');
-		$Parsedown = new Parsedown();
-		$content = $this->GetContent('README.md');
-		echo $Parsedown->text($content);
+        $Parsedown = new Parsedown();
+        $content = $this->GetContent('README.md');
+        echo $Parsedown->text($content);
         echo('<hr/><h1>Válassz az almenükből a beállítások módosításához!</h1>');
         ob_end_flush();
     }

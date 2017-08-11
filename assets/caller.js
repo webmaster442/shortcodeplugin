@@ -1,4 +1,4 @@
-sjQuery(document).ready(function ($) {
+jQuery(document).ready(function ($) {
     $('.easy-footnote a').qtip({
         position: {
             my: 'top center',  // Position my top left...

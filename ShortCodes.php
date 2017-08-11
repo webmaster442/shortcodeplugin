@@ -243,10 +243,10 @@ class ShortCodes
                      '© ' . date("Y").' '.get_bloginfo( 'name' ).'<br/>' .
                      'Felhasználó: ' . $user->user_email . ' ' .$user->display_name .'</div>';
         }
-        if (get_option('w442fw_facebookshare_endpost_yesno') == 'yes') {
+        if (get_option('w442fw_facebookshare_endpost_yesno') == 'yes' && !is_front_page()) {
             $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             $encoded = urlencode($actual_link).'&original_referer='.urlencode($actual_link);
-            $text .= "<span style=\"background: #3b5998; color: white; padding: 10px;\">".
+            $text .= "<br/><span style=\"background: #3b5998; color: white; padding: 5px;\">".
                      "<a style=\"color: white;\" href=\"#\" onclick=\"window.open('https://www.facebook.com/sharer/sharer.php?u=".$encoded."','facebook','toolbar=0, status=0, width=900, height=500');\">" .
                      "<i class=\"fa fa-facebook-official\" aria-hidden=\"true\"></i> Megosztom facebook-on</a></span>";
         }

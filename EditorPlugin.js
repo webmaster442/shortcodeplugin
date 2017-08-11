@@ -35,10 +35,11 @@ ShortCode Plugin Wordpress Editor plugin
                             ed.windowManager.open({
                                 title: 'Archívum létrehozása',
                                 body: [{ type: 'listbox', name: 'type', label: 'Típus :', onselect: function (e) { }, 'values': [{ text: 'Éves', value: 'year' }, { text: 'Kategória', value: 'category' }] },
+                                { type: 'checkbox', name: 'opened', text: 'Archívum automatikus kibontása', checked: true },
                                 { type: 'textbox', name: 'exclude', label: 'Kihagyott kategóriák: ', value: '' }],
                                 onsubmit: function (e) {
                                     ed.focus();
-                                    var t = '[archive type="' + e.data.type + '" exclude="' + e.data.exclude + '"]';
+                                    var t = '[archive type="' + e.data.type + '" open="' + e.data.opened + '" exclude="' + e.data.exclude + '"]';
                                     ed.insertContent(t);
                                 }
                             })

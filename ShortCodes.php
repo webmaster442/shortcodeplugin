@@ -97,10 +97,10 @@ class ShortCodes
 
     public function Archive($atts) {
         wp_enqueue_style( 'colapse' );
-        $a = shortcode_atts( array('type' => 'year', 'exclude' => null), $atts );
+        $a = shortcode_atts( array('type' => 'year', 'open' => true, 'exclude' => null), $atts );
         require_once('ShortCodeArchive.php');
         $archive = new ArchiveGenerator();
-        return $archive->Generate($a['type'], $a['exclude']);
+        return $archive->Generate($a['type'], $a['open'], $a['exclude']);
     }
 
     public function MarkDown($atts , $content = null) {
@@ -236,9 +236,9 @@ class ShortCodes
     }
 
     private function RenderEndPostStuff() {
-        $user = wp_get_current_user();
         $text = "";
         if (get_option('w442fw_usernameend_yesno') == 'yes') {
+            $user = wp_get_current_user();
             $text .= '<div class="copyright" style="display:none;">' . 
                      '© ' . date("Y").' '.get_bloginfo( 'name' ).'<br/>' .
                      'Felhasználó: ' . $user->user_email . ' ' .$user->display_name .'</div>';

@@ -1,7 +1,7 @@
 <?php
 class ArchiveGenerator
 {
-    private function ArchiveByYear() {
+    private function ArchiveByYear($open) {
         ob_start();
         $oldestyear = 1;
         $newestyear = 1;
@@ -27,7 +27,10 @@ class ArchiveGenerator
         {
             $args = array ( 'orderby' => 'date', 'order' => 'ASC', 'posts_per_page' => '-1', 'post_status' => 'publish', 'year' => $i);
             $the_query = new WP_Query( $args );
-            echo '<details>';
+            if ($open === true)
+				echo '<details open>';
+			else
+				echo '<details>';
             if ($the_query->have_posts())
             {
                 echo '<summary>'.$i.'</summary>';
@@ -60,7 +63,7 @@ class ArchiveGenerator
         echo '</div>';
     }
 
-    private function ArchiveByCategory($exclude) {
+    private function ArchiveByCategory($open, $exclude) {
         ob_start();
         if (isset($exclude))
             $categories = get_terms('category', array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0, 'exclude_tree' => $exclude));
@@ -68,7 +71,11 @@ class ArchiveGenerator
             $categories = get_terms('category', array('orderby' => 'name', 'order' => 'ASC', 'parent' => 0));
 
         foreach ($categories as $category) {
-            echo '<details>';
+			if ($open === true)
+				echo '<details open>';
+			else
+				echo '<details>';
+			
             $cat_id = $category->term_id;
             echo '<summary>' .$category->name. '</summary>';
             $sub = get_terms('category', array('orderby' => 'name', 'order' => 'ASC', 'child_of' => $cat_id));
@@ -76,7 +83,10 @@ class ArchiveGenerator
             $this->renderSubCat($cat_id);
             if ($haschilds) {
                 foreach ($sub as $subcat) {
-					echo '<details>';
+					if ($open === true)
+						echo '<details open>';
+					else
+						echo '<details>';
                     echo '<summary>' .$subcat->name. '</summary>';
                     $this->renderSubCat($subcat->term_id);
 					echo '</details>';
@@ -87,9 +97,9 @@ class ArchiveGenerator
         return ob_get_clean();
     }
     
-    public function Generate($type, $param=null) {
-        if ($type === 'year') return $this->ArchiveByYear();
-        else if ($type === 'category') return $this->ArchiveByCategory($param);
+    public function Generate($type, $open, $param=null) {
+        if ($type === 'year') return $this->ArchiveByYear($open);
+        else if ($type === 'category') return $this->ArchiveByCategory($open, $param);
         else return "";
     }
 }

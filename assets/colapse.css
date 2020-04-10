@@ -1,0 +1,36 @@
+@keyframes growAndFadeInFontSize {
+    0% {
+        font-size: 0;
+        opacity: 0;
+    }
+    100% {
+        font-size: 1em;
+        opacity: 1;
+    }
+}
+
+details[open] {
+    animation-name: growAndFadeInFontSize;
+    animation-duration: 500ms;
+}
+
+details summary {
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+details summary:hover {
+    color: gray;
+}
+
+details div {
+    margin-left: 30px;
+}
+
+details details summary {
+    margin-left: 30px;
+}
+
+details details div {
+    margin-left: 60px;
+}

@@ -2,7 +2,7 @@
 /*
 Plugin Name: Webmaster442 Framework
 Description: Webmaster442's Wordpress extension Framework
-Version: 1.1
+Version: 1.2
 Author: Ruzsinszki Gábor
 Author URI: https://webmaster442.hu
 License: GPL2
@@ -12,7 +12,7 @@ require_once('ImageResize.php');
 require_once('Parsedown.php');
 
 //globális cuccok
-define('FRAMEWORKVERSION', '1.1');
+define('FRAMEWORKVERSION', '1.2');
 
 function DLog($message) {
   global $LOGENABLED;

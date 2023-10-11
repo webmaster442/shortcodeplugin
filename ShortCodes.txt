@@ -10,9 +10,6 @@ Kilistázza egy publikusan megosztott Google Drive mappa tartalmát. Két param�
 ## [archive]
 Az oldalon közzétett összes bejegyzést kilistázza egy oldalon, létrehozva egy bejegyzés archívumot. Az archívum csoportosítása éves vagy kategória bontással jelenik meg
 
-## [markdown]
-Ezen blokk között elhelyezett kódot Markdown forráskódként értelmezi és ebből generál HTML kódot. A HTML generálásra a http://parsedown.org/ értelmező használódik.
-
 ## [subpages]
 Egy oldalhoz tartozó összes al oldal kilistázása
 
@@ -44,9 +41,14 @@ Csak nem bejelentkezett felhasználók számára látható tartalmat jelöl
 Mixcloud-ról egyszerűbb beillesztést tesz lehetővé. Jelenleg a WP mixcloud támogatása valamiért törött.
 
 ## Szintaxis kiemelés
-Támogatott nyelvek: markdown, css, js, typescript, csharp, c, c++, f#, bash, git
-```html
-  <pre class="language-[nyelv]">
-    <code>kód</code>
-  </pre>
-```
+Támogatott nyelvek: 
+
+html, xml, svg, mathml, ssml, atom, rss, css, c, c++, c#,
+javascript, aspnet, docker, f#, yaml, makefile, pascal,
+powershell, Python, Razor, SQL, typescript,
+
+
+&lt;pre class=&quot;language-[nyelv]&quot;&gt;
+    &lt;code&gt;k&oacute;d&lt;/code&gt;
+  &lt;/pre&gt;
+

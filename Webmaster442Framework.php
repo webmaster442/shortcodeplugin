@@ -9,10 +9,9 @@ License: GPL2
 */
 require_once('ShortCodes.php');
 require_once('ImageResize.php');
-require_once('Parsedown.php');
 
 //globális cuccok
-define('FRAMEWORKVERSION', '1.2');
+define('FRAMEWORKVERSION', '1.3');
 
 function DLog($message) {
   global $LOGENABLED;
@@ -62,17 +61,19 @@ class Webmaster442Framework {
         ob_start();
         echo('<h1>Webmaster442 Framework '.FRAMEWORKVERSION. '</h1>');
         echo('<hr/>');
-        $Parsedown = new Parsedown();
         $content = $this->GetContent('README.md');
-        echo $Parsedown->text($content);
+        echo "<pre>";
+        echo $content;
+        echo "</pre>";
         echo('<hr/><h1>Válassz az almenükből a beállítások módosításához!</h1>');
         ob_end_flush();
     }
     
     public function PageShortCodeList() {
-        $Parsedown = new Parsedown();
-        $content = $this->GetContent('ShortCodes.md');
-        echo $Parsedown->text($content);;
+        echo "<pre>";
+        $content = $this->GetContent('ShortCodes.txt');
+        echo $content;
+        echo "</pre>";
     }
     
     public function PageSetings() {

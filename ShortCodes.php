@@ -36,11 +36,6 @@ class ShortCodes
 
     public function RegisterJSCSS()
     {
-        wp_register_script('qtip', plugins_url('/assets/jquery.qtip.min.js', __FILE__), false, false, true);
-        wp_register_script('tablesorter', plugins_url('/assets/tablesorter.js', __FILE__), false, false, true);
-        wp_register_script('call', plugins_url('/assets/caller.js', __FILE__), array('jquery', 'qtip', 'tablesorter'), false, true);
-        wp_register_style('qtipstyles', plugins_url('/assets/jquery.qtip.min.css', __FILE__), null, false, false);
-        wp_register_style('tablesorterstyle', plugins_url('/assets/tablesorter.css', __FILE__), null, false, false);
         wp_register_style('circlestyle', plugins_url('/assets/circle.css', __FILE__), null, false, false);
         wp_register_style('colapse', plugins_url('/assets/colapse.css', __FILE__), null, false, false);
     }
@@ -165,9 +160,6 @@ class ShortCodes
 
     public function CsvTable($atts, $content = null)
     {
-        wp_enqueue_style('tablesorterstyle');
-        wp_enqueue_script('tablesorter');
-        wp_enqueue_script('call');
         $a = shortcode_atts(array('delimiter' => ';'), $atts);
         require_once("CsvGenerator.php");
         $gen = new CsvGenerator();
@@ -215,23 +207,6 @@ class ShortCodes
         else if ($a['type'] == 'mini')
             echo ('<iframe width="100%" height="60" src="https://www.mixcloud.com/widget/iframe/?feed=' . $link . '&hide_cover=1&mini=1" frameborder="0"></iframe>');
         return ob_get_clean();
-    }
-
-    public function Note($atts, $content = null)
-    {
-        wp_enqueue_style('qtipstyles');
-        wp_enqueue_script('qtip');
-        wp_enqueue_script('call');
-        $this->easy_footnote_count($this->footnoteCount, get_the_ID());
-        $this->easy_footnote_content($content);
-
-        if (is_singular() && is_main_query()) {
-            $footnoteLink = '#easy-footnote-bottom-' . $this->footnoteCount;
-        } else {
-            $footnoteLink = get_permalink(get_the_ID()) . '#easy-footnote-bottom-' . $this->footnoteCount;
-        }
-        $footnoteContent = "<span id='easy-footnote-" . $this->footnoteCount . "' class='easy-footnote-margin-adjust'></span><span class='easy-footnote'><a href='" . $footnoteLink . "' title='" . htmlspecialchars($content, ENT_QUOTES) . "'><sup>$this->footnoteCount</sup></a></span>";
-        return $footnoteContent;
     }
 
     private function easy_footnote_content($content)

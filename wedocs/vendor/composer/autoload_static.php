@@ -14,29 +14,17 @@ class ComposerStaticInita194d9d09ebd9910e7db446b9581a65d
         'W' => 
         array (
             'WeDevs\\WeDocs\\' => 14,
-        ),
-        'A' => 
-        array (
-            'Appsero\\' => 8,
-        ),
+        )
     );
 
     public static $prefixDirsPsr4 = array (
         'WeDevs\\WeDocs\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
-        ),
-        'Appsero\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/appsero/client/src',
-        ),
+        )
     );
 
     public static $classMap = array (
-        'Appsero\\Client' => __DIR__ . '/..' . '/appsero/client/src/Client.php',
-        'Appsero\\Insights' => __DIR__ . '/..' . '/appsero/client/src/Insights.php',
-        'Appsero\\License' => __DIR__ . '/..' . '/appsero/client/src/License.php',
-        'Appsero\\Updater' => __DIR__ . '/..' . '/appsero/client/src/Updater.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'WeDevs\\WeDocs\\API' => __DIR__ . '/../..' . '/includes/API.php',
         'WeDevs\\WeDocs\\API\\API' => __DIR__ . '/../..' . '/includes/API/API.php',

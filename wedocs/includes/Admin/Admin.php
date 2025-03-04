@@ -14,27 +14,9 @@ class Admin {
         add_action( 'admin_enqueue_scripts', [ $this, 'admin_scripts' ] );
 
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
-        add_action( 'admin_notices', [ $this, 'show_wedocs_beta_notice' ] );
 
         add_filter( 'parent_file', [$this, 'fix_tag_menu' ] );
         add_filter( 'admin_footer_text', [ $this, 'admin_footer_text' ], 1 );
-    }
-
-    /**
-     * Show weDocs beta notices.
-     *
-     * @since 1.7.7
-     *
-     * @return void
-     */
-    public function show_wedocs_beta_notice() {
-        // Check if the admin notice should be hidden based on the user meta.
-        $user_id     = get_current_user_id();
-        $hide_notice = get_user_meta( $user_id, 'wedocs_hide_beta_notice', true );
-        if ( ! $hide_notice ) {
-            // Render weDocs beta info notice.
-            wedocs_get_template_part( 'beta', 'notice' );
-        }
     }
 
     /**
@@ -142,21 +124,6 @@ class Admin {
 
         // Check to make sure we're on a wedocs admin page
         if ( isset( $current_screen->id ) && apply_filters( 'wedocs_display_admin_footer_text', in_array( $current_screen->id, $pages ) ) ) {
-            if ( !get_option( 'wedocs_admin_footer_text_rated' ) ) {
-                $footer_text .= ' ' . sprintf( __( 'Thank you for using <strong>weDocs</strong>. Please leave us a %s&#9733;&#9733;&#9733;&#9733;&#9733;%s rating.', 'wedocs' ), '<a href="https://wordpress.org/support/view/plugin-reviews/wedocs?filter=5#postform" target="_blank" class="wedocs-rating-link" data-rated="' . esc_attr__( 'Thanks :)', 'wedocs' ) . '">', '</a>' );
-                $script = '<script type="text/javascript">
-                    jQuery(function($){$( "a.wedocs-rating-link" ).click( function() {
-                        $.post( ajaxurl, { action: "wedocs_rated", _wpnonce: weDocs.nonce } );
-                        $( this ).parent().text( $( this ).data( "rated" ) );
-                    });});
-                    </script>
-                ';
-
-                echo $script;
-            } else {
-                $footer_text .= ' ' . __( 'Thank you for using <strong>weDocs</strong>.', 'wedocs' );
-            }
-
             $footer_text .= ' ' . sprintf( __( 'Use the <a href="%s">classic UI</a>.', 'wedocs' ), admin_url( 'edit.php?post_type=docs' ) );
         }
 

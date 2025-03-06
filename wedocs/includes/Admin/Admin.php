@@ -34,11 +34,9 @@ class Admin {
             return;
         }
 
-        $suffix     = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
         $assets_url = wedocs()->plugin_url() . '/assets';
 
-        wp_enqueue_script( 'vuejs', $assets_url . '/js/vue' . $suffix . '.js' );
-        wp_enqueue_script( 'sweetalert', $assets_url . '/js/sweetalert.min.js', [ 'jquery' ] );
+        wp_enqueue_script( 'vuejs', $assets_url . '/js/vue.min.js' );
         wp_enqueue_script( 'wedocs-admin-script', $assets_url . '/js/admin-script.js', [ 'jquery', 'jquery-ui-sortable', 'wp-util' ], time(), true );
         wp_localize_script( 'wedocs-admin-script', 'weDocs', [
             'nonce'               => wp_create_nonce( 'wedocs-admin-nonce' ),
@@ -54,7 +52,6 @@ class Admin {
             'delConfirmTxt'       => __( 'Are you sure to delete the entire section? Articles inside this section will be deleted too!', 'wedocs' ),
         ] );
 
-        wp_enqueue_style( 'sweetalert', $assets_url . '/css/sweetalert.css', false, date( 'Ymd' ) );
         wp_enqueue_style( 'wedocs-admin-styles', $assets_url . '/css/admin.css', false, date( 'Ymd' ) );
     }
 

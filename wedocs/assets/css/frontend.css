@@ -78,10 +78,13 @@ body.single.single-docs .content-area {
   overflow: hidden;
 }
 .wedocs-single-wrap {
-  width: 100%;
   display: -ms-flex;
   display: -webkit-flex;
   display: flex;
+  max-width: 90%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 3% 0;
 }
 .wedocs-single-wrap:before,
 .wedocs-single-wrap:after {
